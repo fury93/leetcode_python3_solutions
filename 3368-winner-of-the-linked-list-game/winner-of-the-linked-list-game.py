@@ -5,10 +5,10 @@
 #         self.next = next
 class Solution:
     def gameResult(self, head: Optional[ListNode]) -> str:
-        res, even = 0, head
-        while even:
-            res += 1 if even.val > even.next.val else -1
-            even = even.next.next
+        res, cur = 0, head
+        while cur:
+            res += 1 if cur.val > cur.next.val else -1
+            cur = cur.next.next
         
         if res > 0: return 'Even'
         elif res < 0: return 'Odd'
