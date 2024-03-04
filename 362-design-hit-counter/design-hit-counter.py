@@ -1,4 +1,4 @@
-class HitCounter2:
+class HitCounter:
 
     def __init__(self, maxTime = 300):
         self.cnt = 0
@@ -17,7 +17,7 @@ class HitCounter2:
             self.cnt -= self.hits.popleft()[1]
         return self.cnt
 
-class HitCounter3:
+class HitCounter2:
 
     def __init__(self, maxTime = 300):
         self.maxTime = maxTime
@@ -34,7 +34,7 @@ class HitCounter3:
         return sum(cnt for t, cnt in self.hits if timestamp - t < self.maxTime)
         
 
-class HitCounter:
+class HitCounter3:
 
     def __init__(self, maxTime = 300):
         self.hits = deque()
