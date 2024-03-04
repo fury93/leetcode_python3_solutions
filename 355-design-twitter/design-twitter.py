@@ -32,7 +32,8 @@ class Twitter:
         if followerId in self.subscribers[followeeId]: return
         self.subscribers[followeeId].add(followerId)
         self.subscriptions[followerId].add(followeeId)
-        self.__addUserToFeed(followerId, followeeId)
+        self.__updateUserFeed(followerId)
+        #self.__addUserToFeed(followerId, followeeId)
         
     def unfollow(self, followerId: int, followeeId: int) -> None:
         if followerId not in self.subscribers[followeeId]: return
@@ -56,6 +57,8 @@ class Twitter:
         for tweet in feed:
             self.__addToFeed(userId, tweet, False)
         
+        #feed = sorted(list(self.feed[userId]) + list(self.posts[addUserId]))
+        #self.__clearFeed(userId)
         # here newFeed can be sliced to maxLimit size(10) manually or automatically by queue using maxLimit size
         #list(map(lambda tweet: self.__addToFeed(userId, tweet), feed))
 
