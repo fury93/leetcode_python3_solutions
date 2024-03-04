@@ -51,10 +51,13 @@ class Twitter:
 
     def __addUserToFeed(self, userId, addUserId):
         # it's max 20 tweets, so instead of calling __updateUserFeed() can be used simple sorting
-        feed = sorted(list(self.feed[userId]) + list(self.posts[addUserId]))
+        feed = sorted(list(self.feed[userId]) + list(self.posts[addUserId]), reverse = True)[:self.__feedLimit]
         self.__clearFeed(userId)
+        for tweet in feed:
+            self.__addToFeed(userId, tweet, False)
+        
         # here newFeed can be sliced to maxLimit size(10) manually or automatically by queue using maxLimit size
-        list(map(lambda tweet: self.__addToFeed(userId, tweet), feed))
+        #list(map(lambda tweet: self.__addToFeed(userId, tweet), feed))
 
     def __updateUserFeed(self, userId) -> None:
         self.__clearFeed(userId)
