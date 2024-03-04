@@ -62,4 +62,6 @@ class Twitter:
         tweets = heapq.merge(*(self.posts[idx] for idx in self.subscriptions[userId] | {userId}), reverse = True)
         limitTweets = islice(tweets, self.__feedLimit)
 
-        list(map(lambda tweet: self.__addToFeed(userId, tweet, False), limitTweets))
+        for tweet in limitTweets:
+            self.__addToFeed(userId, tweet, False)
+        #list(map(lambda tweet: self.__addToFeed(userId, tweet, False), limitTweets))
