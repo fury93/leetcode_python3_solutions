@@ -50,7 +50,7 @@ class Twitter:
     def __clearFeed(self, userId: int) -> None:
         self.feed[userId].clear()
 
-    # it's max 20 tweets, so instead of calling __updateUserFeed() can be used simple sorting of current feed and new user feed
+    # it's max 20 tweets, so instead of calling __updateUserFeed() can be used simple sorting of current feed + new user posts
     def __addUserToFeed(self, userId, addUserId):
         feed = sorted(list(self.feed[userId]) + list(self.posts[addUserId]), reverse = True)[:self.__feedLimit]
         self.__clearFeed(userId)
