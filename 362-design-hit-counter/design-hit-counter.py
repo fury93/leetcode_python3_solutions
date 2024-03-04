@@ -13,7 +13,7 @@ class HitCounter:
         self.cnt += 1 
 
     def getHits(self, timestamp: int) -> int:
-        while self.hits and self.hits[0][0] <= timestamp - self.maxTime:
+        while self.hits and self.hits[0][0] + self.maxTime <= timestamp:
             self.cnt -= self.hits.popleft()[1]
         return self.cnt
 
