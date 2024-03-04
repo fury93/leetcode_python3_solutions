@@ -1,4 +1,4 @@
-class HitCounter:
+class HitCounter2:
 
     def __init__(self, maxTime = 300):
         self.cnt = 0
@@ -17,10 +17,9 @@ class HitCounter:
             self.cnt -= self.hits.popleft()[1]
         return self.cnt
 
-class HitCounter2:
+class HitCounter3:
 
     def __init__(self, maxTime = 300):
-        self.lastHitIdx = 0
         self.maxTime = maxTime
         self.hits = [[0, 0]] * self.maxTime
         
@@ -30,13 +29,23 @@ class HitCounter2:
             self.hits[idx] = [timestamp, 1]
         else:
             self.hits[idx][1] += 1
-        self.lastHitIdx = idx
 
     def getHits(self, timestamp: int) -> int:
-        if timestamp - self.maxTime > self.hits[self.lastHitIdx][0]: return 0
         return sum(cnt for t, cnt in self.hits if timestamp - t < self.maxTime)
         
 
+class HitCounter:
+
+    def __init__(self, maxTime = 300):
+        self.hits = deque()
+        self.maxShift = maxTime - 1
+
+    def hit(self, timestamp: int) -> None:
+        self.hits.append(timestamp)
+
+    def getHits(self, timestamp: int) -> int:
+        index = bisect.bisect_left(self.hits, timestamp - self.maxShift)
+        return len(self.hits) - index
 
 # Your HitCounter object will be instantiated and called as such:
 # obj = HitCounter()
