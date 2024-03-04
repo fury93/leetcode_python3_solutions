@@ -1,0 +1,79 @@
+class Tweet():
+    def __init__(self, idx, time):
+        self.idx = idx
+        self.time = time
+
+    def __lt__(self, other):
+        return self.time < other.time
+
+    def getId(self) -> int:
+        return self.idx
+
+class Twitter:
+    def __init__(self):
+        self.__feedLimit = 10
+        # unique id for tweet according time, here also can be used timestamp or more advanced UUID https://docs.python.org/3/library/uuid.html
+        self.uuid = itertools.count()                                     # it's just a number 1,2,3....
+        self.subscribers = defaultdict(set)                               # userId => set(subscribers1, subscriber2, ...)
+        self.subscriptions = defaultdict(set)                             #userId => set(subscription1, subscription2, ...)
+        self.feed = defaultdict(lambda: deque(maxlen = self.__feedLimit)) # userId => deque(feed)
+        self.posts = defaultdict(deque)                                   # userId => deque(user posts, newest from the left), or DoubleLinkelList if needed deletion support
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        #print('postTweet()', userId, tweetId)
+        tweet = Tweet(tweetId, next(self.uuid))
+        self.posts[userId].appendleft(tweet)
+        for idx in chain([userId], self.subscribers[userId]):   # add tweet to all subscribers feeds
+            self.__addToFeed(idx, tweet)
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        return list(map(Tweet.getId, self.feed[userId]))
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        #print('follow()', followerId, followeeId)
+        if followerId in self.subscribers[followeeId]: return
+
+        self.subscribers[followeeId].add(followerId)
+        self.subscriptions[followerId].add(followeeId)
+        self.__addUserToFeed(followerId, followeeId)
+        
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        #print('unfollow()', followerId, followeeId)
+        if followerId not in self.subscribers[followeeId]: return
+
+        self.subscribers[followeeId].discard(followerId)
+        self.subscriptions[followerId].discard(followeeId)
+        #self.__removeUserFromFeed(followerId, followeeId)
+        self.__updateUserFeed(followerId)
+
+    def __addToFeed(self, userId: int, tweet: Tweet, toStart = True) -> None:
+        #print('addToFeedBefore', userId, list(self.feed[userId]))
+        if toStart:
+            self.feed[userId].appendleft(tweet)
+        else:
+            self.feed[userId].append(tweet)
+    
+    def __clearFeed(self, userId: int) -> None:
+        self.feed[userId].clear()
+
+    def __addUserToFeed(self, userId, addUserId):
+        # it's max 20 twets, so instead of heapq.merge can be used simple sorting
+        feed = sorted(list(self.feed[userId]) + list(self.posts[addUserId]))
+        self.__clearFeed(userId)
+        # here newFeed can be sliced to maxLimit size(10) manually or automatically for maxLimit size
+        list(map(lambda tweet: self.__addToFeed(userId, tweet), feed))
+
+    # todo is it not used?
+    def __removeUserFromFeed(self, userId, removeUserId) -> None:
+        feed = list(filter(lambda x: x not in self.posts[removeUserId], self.feed[userId]))
+        self.__clearFeed(userId)
+        list(map(lambda tweet: self.__addToFeed(userId, tweet), feed))
+
+    def __updateUserFeed(self, userId) -> None:
+        self.__clearFeed(userId)
+
+        tweets = heapq.merge(*(self.posts[idx] for idx in self.subscriptions[userId] | {userId}), reverse = True)
+        limitTweets = islice(tweets, self.__feedLimit)
+
+        for tweet in limitTweets:
+            self.__addToFeed(userId, tweet, False)
