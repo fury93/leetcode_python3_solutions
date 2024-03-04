@@ -20,7 +20,6 @@ class Twitter:
         self.posts = defaultdict(deque)                                   # userId => deque(user posts, newest from the left), or DoubleLinkelList if needed deletion support
 
     def postTweet(self, userId: int, tweetId: int) -> None:
-        #print('postTweet()', userId, tweetId)
         tweet = Tweet(tweetId, next(self.uuid))
         self.posts[userId].appendleft(tweet)
         for idx in chain([userId], self.subscribers[userId]):   # add tweet to all subscribers feeds
@@ -30,24 +29,18 @@ class Twitter:
         return list(map(Tweet.getId, self.feed[userId]))
 
     def follow(self, followerId: int, followeeId: int) -> None:
-        #print('follow()', followerId, followeeId)
         if followerId in self.subscribers[followeeId]: return
-
         self.subscribers[followeeId].add(followerId)
         self.subscriptions[followerId].add(followeeId)
         self.__addUserToFeed(followerId, followeeId)
         
     def unfollow(self, followerId: int, followeeId: int) -> None:
-        #print('unfollow()', followerId, followeeId)
         if followerId not in self.subscribers[followeeId]: return
-
         self.subscribers[followeeId].discard(followerId)
         self.subscriptions[followerId].discard(followeeId)
-        #self.__removeUserFromFeed(followerId, followeeId)
         self.__updateUserFeed(followerId)
 
     def __addToFeed(self, userId: int, tweet: Tweet, toStart = True) -> None:
-        #print('addToFeedBefore', userId, list(self.feed[userId]))
         if toStart:
             self.feed[userId].appendleft(tweet)
         else:
@@ -57,23 +50,16 @@ class Twitter:
         self.feed[userId].clear()
 
     def __addUserToFeed(self, userId, addUserId):
-        # it's max 20 twets, so instead of heapq.merge can be used simple sorting
+        # it's max 20 tweets, so instead of calling __updateUserFeed() can be used simple sorting
         feed = sorted(list(self.feed[userId]) + list(self.posts[addUserId]))
         self.__clearFeed(userId)
-        # here newFeed can be sliced to maxLimit size(10) manually or automatically for maxLimit size
-        list(map(lambda tweet: self.__addToFeed(userId, tweet), feed))
-
-    # todo is it not used?
-    def __removeUserFromFeed(self, userId, removeUserId) -> None:
-        feed = list(filter(lambda x: x not in self.posts[removeUserId], self.feed[userId]))
-        self.__clearFeed(userId)
+        # here newFeed can be sliced to maxLimit size(10) manually or automatically by queue using maxLimit size
         list(map(lambda tweet: self.__addToFeed(userId, tweet), feed))
 
     def __updateUserFeed(self, userId) -> None:
         self.__clearFeed(userId)
-
+        
         tweets = heapq.merge(*(self.posts[idx] for idx in self.subscriptions[userId] | {userId}), reverse = True)
         limitTweets = islice(tweets, self.__feedLimit)
 
-        for tweet in limitTweets:
-            self.__addToFeed(userId, tweet, False)
+        list(map(lambda tweet: self.__addToFeed(userId, tweet, False), limitTweets))
