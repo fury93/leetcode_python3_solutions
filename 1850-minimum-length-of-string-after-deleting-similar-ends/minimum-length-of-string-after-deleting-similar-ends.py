@@ -1,5 +1,13 @@
 class Solution:
     def minimumLength(self, s: str) -> int:
+        l, r = 0, len(s) - 1
+        while l < r and s[l] == s[r]:
+            char = s[l]
+            while l <= r and s[l] == char : l += 1
+            while  l <= r and s[r] == char: r -= 1
+        return r - l + 1
+
+    def minimumLength2(self, s: str) -> int:
         res = len(s)
         s = [(k, len(list(g))) for k, g in groupby(s)]
         
