@@ -1,13 +1,13 @@
 class Solution:
     # 1 Sort
-    def findDuplicate(self, nums: List[int]) -> int:
+    def findDuplicate1(self, nums: List[int]) -> int:
         nums.sort()
         for i in range(1, len(nums)):
             if nums[i] == nums[i-1]:
                 return nums[i]
 
     # 2 Set
-    def findDuplicate2(self, nums: List[int]) -> int:
+    def findDuplicate(self, nums: List[int]) -> int:
         seen = set()
         for num in nums:
             if num in seen:
