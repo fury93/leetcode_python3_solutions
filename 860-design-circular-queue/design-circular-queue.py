@@ -1,45 +1,48 @@
 class Node:
     def __init__(self, val = -1):
         self.val = val
-        self.prev = None
         self.next = None
 
-class DLL:
+class SLL:
     def __init__(self):
+        self.head = None
+        self.tail = None
         self.size = 0
-        self.dummy_start = Node()
-        self.dummy_end = Node()
-        self.dummy_start.next = self.dummy_end
-        self.dummy_end.prev = self.dummy_start
 
-    def append(self, node) -> Node:
-        left, right = self.dummy_end.prev, self.dummy_end
-        node.next = right
-        node.prev = left
-        left.next = node
-        right.prev = node
+    def append(self, val) -> Node:
+        newNode = Node(val)
+        if self.size == 0:
+            self.head = self.tail = newNode
+        else:
+            self.tail.next = newNode
+            self.tail = newNode
         self.size += 1
-        
-        return node
+        return newNode
 
     def popLeft(self) -> bool:
         if self.size == 0: return False
-        firstNode = self.dummy_start.next
-        self.dummy_start.next = firstNode.next
-        firstNode.next.prev = self.dummy_start
-        del firstNode
+        node = self.head
+        if self.head == self.tail:
+            self.head = self.tail = None
+        else:
+            self.head = self.head.next
+        del node
         self.size -= 1
         return True
 
-    def peekLeft(self) -> Node:
-        return self.dummy_start.next
+    def peekLeft(self) -> int:
+        if self.size == 0: return -1
+        return self.head.val
 
-    def peekRight(self) -> Node:
-        return self.dummy_end.prev
-    
-    def getSize(self) -> int:
+    def peekRight(self) -> int:
+        if self.size == 0: return -1
+        return self.tail.val
+
+    def getSize(self):
         return self.size
 
+# LinkedList (it's one profit, does not pre-allocate memore fo unsunsed capacity)
+# But it's not circular, where the idea to use already allocated memory
 class MyCircularQueue:
 
     def __init__(self, k: int):
@@ -47,7 +50,7 @@ class MyCircularQueue:
         Initialize your data structure here. Set the size of the queue to be k.
         """
         self.maxSize = k
-        self.q = DLL()
+        self.q = SLL()
         
 
     def enQueue(self, value: int) -> bool:
@@ -55,7 +58,7 @@ class MyCircularQueue:
         Insert an element into the circular queue. Return true if the operation is successful.
         """
         if self.isFull(): return False 
-        self.q.append(Node(value))
+        self.q.append(value)
         return True
 
     def deQueue(self) -> bool:
@@ -68,14 +71,13 @@ class MyCircularQueue:
         """
         Get the front item from the queue.
         """
-        print(self.q.dummy_start.next, self.q.dummy_end.prev)
-        return self.q.peekLeft().val
+        return self.q.peekLeft()
 
     def Rear(self) -> int:
         """
         Get the last item from the queue.
         """
-        return self.q.peekRight().val
+        return self.q.peekRight()
 
     def isEmpty(self) -> bool:
         """
@@ -89,14 +91,14 @@ class MyCircularQueue:
         """
         return self.maxSize == self.q.getSize()
 
-
+# Circular array
 class MyCircularQueue2:
 
     def __init__(self, k: int):
         """
         Initialize your data structure here. Set the size of the queue to be k.
         """
-        self.data = [0]*k
+        self.data = [0] * k
         self.head = self.tail = 0
         
 
