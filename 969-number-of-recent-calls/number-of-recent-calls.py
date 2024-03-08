@@ -6,13 +6,12 @@ class RecentCounter:
         self.calls = 0
 
     def ping(self, t: int) -> int:
-        if self.data and self.data[-1][0] == t:
-            self.data[-1][0] += 1
-        else:
-            self.data.append([t, 1])
-        
         self.calls += 1
-
+        if not self.data or self.data[-1][0] < t:
+            self.data.append([t, 1])
+        else:
+            self.data[-1][0] += 1
+        
         while self.data[0][0] < t - self.k:
             self.calls -= self.data.popleft()[1]
         
