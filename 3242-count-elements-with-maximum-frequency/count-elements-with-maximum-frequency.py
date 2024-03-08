@@ -9,7 +9,7 @@ class FrequencyBlock(object):
         self.prev.next = self.next
         self.next.prev = self.prev
         self.prev, self.next = None, None
-        # del self
+        del self
 
     def remove_num(self, num):
         self.nums.remove(num)
@@ -61,8 +61,8 @@ class Solution:
             self.mapping[n] = new_block
 
             # remove current block if it's emtpy and not dummy
-            #if not current_block.empty() and current_block.frequency() != 0:
-                #current_block.remove()
+            if current_block.frequency() != 0 and current_block.empty():
+                current_block.remove()
 
         return self.end.prev.total_frequency()
 
