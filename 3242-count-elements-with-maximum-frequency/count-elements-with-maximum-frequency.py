@@ -5,10 +5,10 @@ class FrequencyBlock(object):
         self.prev = None
         self.next = None
 
-    def remove_num(self, num):
+    def removeNum(self, num):
         self.nums.remove(num)
     
-    def add_num(self, num):
+    def addNum(self, num):
         self.nums.add(num)
 
     def empty(self):
@@ -17,10 +17,10 @@ class FrequencyBlock(object):
     def frequency(self):
         return self.freq
 
-    def total_frequency(self) -> int:
+    def totalFrequency(self) -> int:
         return len(self.nums) * self.freq
 
-    def insert_after(self, new_block):
+    def insertAfter(self, new_block):
         new_block.next = self.next
         new_block.prev = self
         self.next.prev = new_block
@@ -41,28 +41,28 @@ class Solution:
 
     def maxFrequencyElements(self, nums: List[int]) -> int:
         for n in nums:
-            if not n in self.mapping:
-                current_block = self.start
-            else:
+            if n in self.mapping:
                 current_block = self.mapping[n]
-                current_block.remove_num(n)
+                current_block.removeNum(n)
+            else:
+                 current_block = self.start
+                
 
             new_frequency = current_block.freq + 1
-            print(n, current_block.freq, current_block.next)
             if new_frequency != current_block.next.frequency():
                 # create new frequency block
                 new_block = FrequencyBlock(new_frequency)
-                current_block.insert_after(new_block)
+                current_block.insertAfter(new_block)
             else:
                 new_block = current_block.next
 
-            new_block.add_num(n)
+            new_block.addNum(n)
             self.mapping[n] = new_block
 
             # remove current block if it's emtpy and not dummy
-            if current_block.frequency() != 0 and current_block.empty():
-                current_block.remove()
+            # if current_block.frequency() != 0 and current_block.empty():
+            #    current_block.remove()
 
-        return self.end.prev.total_frequency()
+        return self.end.prev.totalFrequency()
 
         
