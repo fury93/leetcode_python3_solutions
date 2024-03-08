@@ -60,8 +60,8 @@ class Solution:
             self.mapping[n] = new_block
 
             # remove current block if it's emtpy and not dummy
-            # if current_block.frequency() != 0 and current_block.empty():
-            #    current_block.remove()
+            if current_block.frequency() != 0 and current_block.empty():
+                current_block.remove()
 
         return self.end.prev.totalFrequency()
 
