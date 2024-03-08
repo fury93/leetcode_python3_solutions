@@ -15,7 +15,7 @@ class FreqStack:
         val = self.stack[self.maxFreq].pop()
         self.freq[val] -= 1
         if not self.stack[self.maxFreq]:
-            del self.stack[self.maxFreq]
+            # del self.stack[self.maxFreq]
             self.maxFreq -=1
         
         return val
