@@ -1,6 +1,6 @@
 class Solution:
     def largestWordCount(self, messages: List[str], senders: List[str]) -> str:
-        d, maxSenderName= defaultdict(int), '@'
+        d, maxSenderName= defaultdict(int), ''
         for mes, name in zip(messages, senders):
             d[name] += len(mes.split())
             if d[name] > d[maxSenderName]:
