@@ -5,12 +5,6 @@ class FrequencyBlock(object):
         self.prev = None
         self.next = None
 
-    def remove(self):
-        self.prev.next = self.next
-        self.next.prev = self.prev
-        self.prev, self.next = None, None
-        del self
-
     def remove_num(self, num):
         self.nums.remove(num)
     
@@ -31,6 +25,11 @@ class FrequencyBlock(object):
         new_block.prev = self
         self.next.prev = new_block
         self.next = new_block
+
+    def remove(self):
+        self.prev.next = self.next
+        self.next.prev = self.prev
+        self.prev, self.next = None, None
 
 class Solution:
     def __init__(self):
