@@ -1,5 +1,3 @@
-#from sortedcontainers import SortedDict
-
 class Task:
     def __init__(self, taskId, taskDescription, dueDate, tags):
         self.taksId = taskId
@@ -56,7 +54,6 @@ class TodoList:
     def sortTasksByDueDate(self, tasks):
         return sorted(tasks, key = lambda task: task.getDueDate())
         
-
 
 # Your TodoList object will be instantiated and called as such:
 # obj = TodoList()
