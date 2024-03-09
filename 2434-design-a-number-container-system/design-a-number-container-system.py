@@ -3,14 +3,16 @@ from sortedcontainers import SortedList
 class NumberContainers:
 
     def __init__(self):
-        self.indexNum = dict()
+        self.indexToNum = dict()
         self.numIndexes = defaultdict(SortedList)
 
     def change(self, index: int, number: int) -> None:
-        if index in self.indexNum:
-            oldNum = self.indexNum[index]
-            self.numIndexes[oldNum].remove(index)
-        self.indexNum[index] = number
+        if index in self.indexToNum:
+            oldNum = self.indexToNum[index]
+            self.numIndexes[oldNum].discard(index)
+            if not self.numIndexes[oldNum]:
+                del self.numIndexes[oldNum]
+        self.indexToNum[index] = number
         self.numIndexes[number].add(index)
 
     def find(self, number: int) -> int:
