@@ -14,8 +14,8 @@ class Solution:
                 continue
             
             for _ in range(command):
-                # nextPosition = tuple(pos + diff for pos, diff in zip(curPosition, direction[curDirection]))
-                nextPosition = (curPosition[0] + direction[curDirection][0], curPosition[1] + direction[curDirection][1])
+                nextPosition = tuple(pos + diff for pos, diff in zip(curPosition, direction[curDirection]))
+                #nextPosition = (curPosition[0] + direction[curDirection][0], curPosition[1] + direction[curDirection][1])
                 if nextPosition in obstacles:
                     break
                 curPosition = nextPosition
