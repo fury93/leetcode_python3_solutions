@@ -7,7 +7,8 @@ class StockPrice:
         self.maxTime = 0
 
     def update(self, timestamp: int, price: int) -> None:
-        self.prices.discard(self.timeToPrice[timestamp])
+        if oldPrice:= self.timeToPrice[timestamp]:
+            self.prices.discard(oldPrice)
         self.prices.add(price)
         self.timeToPrice[timestamp] = price
         self.maxTime = max(self.maxTime, timestamp)
@@ -16,11 +17,9 @@ class StockPrice:
         return self.timeToPrice[self.maxTime]
 
     def maximum(self) -> int:
-        if not self.prices: return 0
         return self.prices[-1]
 
     def minimum(self) -> int:
-        if not self.prices: return 0
         return self.prices[0]
 
 
