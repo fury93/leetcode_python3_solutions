@@ -17,22 +17,20 @@ class StockPrice:
         return self.timeToPrice[self.maxTime]
 
     def maximum(self) -> int:
-        while self.maxPrices:
+        price, timestamp = self.maxPrices[0]
+        while self.timeToPrice[timestamp] != -price:
+            heappop(self.maxPrices)
             price, timestamp = self.maxPrices[0]
-            if self.timeToPrice[timestamp] != -price:
-                heappop(self.maxPrices)
-            else: break
         
-        return -self.maxPrices[0][0] if self.maxPrices else -1
+        return -price
 
     def minimum(self) -> int:
-        while self.minPrices:
+        price, timestamp = self.minPrices[0]
+        while self.timeToPrice[timestamp] != price:
+            heappop(self.minPrices)
             price, timestamp = self.minPrices[0]
-            if self.timeToPrice[timestamp] != price:
-                heappop(self.minPrices)
-            else: break
         
-        return self.minPrices[0][0] if self.minPrices else -1
+        return price
 
 class StockPrice2:
 
