@@ -7,13 +7,14 @@ class Solution:
         
         chars = []
         for ch in order:
-            chars.append(ch * freq[ch])
-            freq[ch] = 0
+            if freq[ch] > 0:
+                chars.append(repeat(ch, freq[ch]))
+                freq[ch] = 0
 
         for ch, cnt in freq.items():
-            chars.append(ch * cnt)
+            if cnt > 0: chars.append(repeat(ch, cnt))
 
-        return ''.join(chars)
+        return ''.join(chain(*chars))
 
     def customSortString2(self, order: str, s: str) -> str:
         d = {v:k for k, v in enumerate(order)}
