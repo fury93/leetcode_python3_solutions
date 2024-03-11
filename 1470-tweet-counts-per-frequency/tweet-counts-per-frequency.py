@@ -7,15 +7,19 @@ class TweetCounts:
         self.tweets[tweetName].append(time)
 
     def getTweetCountsPerFrequency(self, freq: str, tweetName: str, startTime: int, endTime: int) -> List[int]:
-        match freq:
-            case 'minute': delta = 60
-            case 'hour': delta = 3600
-            case _: delta = 86400
+        if tweetName not in self.tweets: return 0
 
-        results = [0 for _ in range(startTime, endTime+1, delta)]
+        match freq:
+            case 'minute': intervalSize = 60
+            case 'hour': intervalSize = 3600
+            case _: intervalSize = 86400
+
+        intervalCnt = (endTime - startTime) // intervalSize + 1
+        results = [0] * intervalCnt
+        
         for time in self.tweets[tweetName]:
             if startTime <= time <= endTime:
-                results[(time-startTime) // delta] += 1
+                results[(time-startTime) // intervalSize] += 1
         
         return results
 
