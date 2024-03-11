@@ -20,24 +20,22 @@ class LogSystem2:
 class LogSystem:
 
     def __init__(self):
-        self.logs = {}
+        self.logs = defaultdict(set)
+        self.mask = {"Year": 4, "Month": 7, "Day": 10, "Hour":13, "Minute":16, "Second":19}
 
     def put(self, id, timestamp):
-        if timestamp not in self.logs:
-            self.logs[timestamp] = set()
         self.logs[timestamp].add(id)
 
     def retrieve(self, start, end, granularity):
-        index = {'Year': 4, 'Month': 7, 'Day': 10, 'Hour': 13, 'Minute': 16, 'Second': 19}[granularity]
-        start, end = start[:index], end[:index]
+        sliceIdx = self.mask[granularity]
+        start = start[:sliceIdx]
+        end = end[:sliceIdx]
 
-        # Collecting and sorting unique IDs from logs in the specified range
-        ids = set()
-        for timestamp in self.logs:
-            if start <= timestamp[:index] <= end:
-                ids.update(self.logs[timestamp])
-
-        return sorted(ids)
+        res = set()
+        for time, ids in self.logs.items():
+            if start <= time[:sliceIdx] <= end:
+                res.update(ids)
+        return res
 
 # Your LogSystem object will be instantiated and called as such:
 # obj = LogSystem()
