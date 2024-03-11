@@ -1,4 +1,4 @@
-from itertools import repeat
+#from itertools import repeat
 class Solution:
     def customSortString(self, order: str, s: str) -> str:
         freq = defaultdict(int)
@@ -12,9 +12,10 @@ class Solution:
                 freq[ch] = 0
 
         for ch, cnt in freq.items():
-            if cnt > 0: chars.append(repeat(ch, cnt))
+            if cnt > 0:
+                chars.append(repeat(ch, cnt))
 
-        return ''.join(chain(*chars))
+        return ''.join(chain.from_iterable(chars))
 
     def customSortString2(self, order: str, s: str) -> str:
         d = {v:k for k, v in enumerate(order)}
