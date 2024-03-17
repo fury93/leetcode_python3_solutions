@@ -1,5 +1,12 @@
 class Solution:
     def isSubstringPresent(self, s: str) -> bool:
+        s += ' '
+        for prev, cur, nxt in zip(s, s[1:], s[2:]):
+            if cur == prev or prev == nxt:
+                return True
+        return False
+
+    def isSubstringPresent2(self, s: str) -> bool:
         for i in range(1, len(s)):
             if s[i] == s[i-1] or i + 1 < len(s) and s[i-1] == s[i+1]:
                 return True
