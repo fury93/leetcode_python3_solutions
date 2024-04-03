@@ -4,8 +4,7 @@ class Solution:
         
         for ch in s:
             freq[ch] += 1
-            if freq[ch] == k + 1:
-                moreThanK += 1
+            moreThanK += freq[ch] == k + 1
 
             if moreThanK > 0:
                 freq[s[l]] -= 1
