@@ -14,17 +14,15 @@ class Solution:
     def maxSubarrayLength(self, nums: List[int], k: int) -> int:
         moreThanK, l, freq = 0, 0, defaultdict(int)
 
-        for r, num in enumerate(nums):
+        for num in nums:
             freq[num] += 1
             
             if freq[num] == k + 1:
                 moreThanK += 1
             
             if moreThanK > 0:
-                leftBoundNum = nums[l]
-                if freq[leftBoundNum] == k + 1:
-                    moreThanK -= 1
-                freq[leftBoundNum] -= 1
+                freq[nums[l]] -= 1
+                moreThanK -= freq[nums[l]] == k
                 l += 1
 
-        return r - l + 1 
+        return len(nums) - l
