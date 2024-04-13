@@ -2,7 +2,8 @@ class Solution:
     def numberOfSpecialSubstrings(self, s: str) -> int:
         res, l, seen = 0, 0, [-1] * 128
         for r, ch in enumerate(s):
-            l = max(l, seen[ord(ch)] + 1)
+            if seen[ord(ch)] >= l:
+                l = seen[ord(ch)] + 1
             res += r - l + 1
             seen[ord(ch)] = r
         return res
