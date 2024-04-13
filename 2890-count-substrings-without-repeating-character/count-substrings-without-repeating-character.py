@@ -2,10 +2,12 @@ class Solution:
     def numberOfSpecialSubstrings(self, s: str) -> int:
         res, l, seen = 0, 0, [-1] * 128
         for r, ch in enumerate(s):
-            if seen[ord(ch)] >= l:
-                l = seen[ord(ch)] + 1
+            key = ord(ch)
+            if seen[key] >= l:
+                l = seen[key] + 1
+            seen[key] = r
             res += r - l + 1
-            seen[ord(ch)] = r
+            
         return res
         
     # Not working approach, look later with test case "afiau"
