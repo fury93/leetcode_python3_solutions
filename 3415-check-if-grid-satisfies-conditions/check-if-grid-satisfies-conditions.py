@@ -1,15 +1,9 @@
 class Solution:
     def satisfiesConditions(self, grid: List[List[int]]) -> bool:
+        for a, b in pairwise(grid[0]):
+            if a == b: return False
+        
         for coll in zip(*grid):
-            prev = coll[0]
-            for cell in coll:
-                if cell != prev:
-                    return False
-
-        prev = None
-        for cell in grid[0]:
-            if cell == prev:
-                return False
-            prev = cell
+            if not all(coll[0] == cell for cell in coll): return False
 
         return True
