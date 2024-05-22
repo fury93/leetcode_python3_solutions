@@ -1,5 +1,5 @@
 class Solution:
-    def moveZeroes(self, nums: List[int]) -> None:
+    def moveZeroes2(self, nums: List[int]) -> None:
         snawBall = 0
         for i, n in enumerate(nums):
             if n == 0:
@@ -7,7 +7,7 @@ class Solution:
             elif snawBall > 0:
                 nums[i], nums[i - snawBall] =  nums[i - snawBall], nums[i]
 
-    def moveZeroes2(self, nums: List[int]) -> None:
+    def moveZeroes(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
         """
