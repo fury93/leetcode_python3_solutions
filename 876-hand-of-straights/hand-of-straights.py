@@ -4,10 +4,10 @@ class Solution:
 
         for val in sorted(cnt):
             if not cnt[val]: continue
-            diff = cnt[val]
+            groupCnt = cnt[val]
             for j in range(val, val + groupSize):
-                if cnt[j] < diff:
+                if cnt[j] < groupCnt:
                     return False
-                cnt[j] -= diff
+                cnt[j] -= groupCnt
 
         return True
