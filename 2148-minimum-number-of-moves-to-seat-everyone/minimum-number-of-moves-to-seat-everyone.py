@@ -1,11 +1,11 @@
 class Solution:
-    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
+    def minMovesToSeat2(self, seats: List[int], students: List[int]) -> int:
         res = 0
         for seat, student in zip(sorted(seats), sorted(students)):
             res += abs(seat - student)
         return res
 
-    def minMovesToSeat2(self, seats: List[int], students: List[int]) -> int:
+    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
         max_position = max(max(seats), max(students))
         differences = [0] * (max_position)
 
