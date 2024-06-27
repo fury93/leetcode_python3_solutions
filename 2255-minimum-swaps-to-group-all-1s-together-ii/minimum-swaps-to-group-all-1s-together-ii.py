@@ -1,5 +1,5 @@
 class Solution:
-    def minSwaps(self, nums: List[int]) -> int:
+    def minSwaps2(self, nums: List[int]) -> int:
         ones = sum(nums)
         if ones <= 1: return 0
         
@@ -12,4 +12,14 @@ class Solution:
             zeros -= nums[(i + 1 - ones) % len(nums)] == 0
         
         return minSwaps
+
+    def minSwaps(self, nums: List[int]) -> int:
+        ones = sum(nums)
+        curOnes = maxOnes = sum(nums[:ones])
         
+        for i in range(len(nums)):
+            curOnes -= nums[i]
+            curOnes += nums[(i + ones) % len(nums)]
+            maxOnes = max(maxOnes, curOnes)
+        
+        return ones - maxOnes
