@@ -1,10 +1,10 @@
 class Solution:
     # Optimized Sliding Window with list
     def lengthOfLongestSubstring(self, s: str) -> int:
-        res, pos, l = 0, [None] * 128, 0
+        res, pos, l = 0, [-1] * 128, 0
         for r, ch in enumerate(s):
             idx = ord(ch)
-            if pos[idx] is not None and pos[idx] >= l:
+            if pos[idx] >= l:
                 l = pos[idx] + 1
             res = max(res, r - l + 1)
             pos[idx] = r
