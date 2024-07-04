@@ -1,20 +1,11 @@
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
 class Solution:
     def mergeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        backbone = ListNode()
-        prefix, prev = 0, backbone
-        while head:
-            if head.val == 0:
-                if prefix > 0:
-                    prev.next = ListNode(prefix)
-                    prefix = 0
-                    prev = prev.next
-            else:
-                prefix += head.val
-            head = head.next
+        cur, sm, prev = head.next, 0, head
+        while cur:
+            sm += cur.val
+            if cur.val == 0:
+                cur.val, sm = sm, 0
+                prev.next = prev = cur
+            cur = cur.next
 
-        return backbone.next
+        return head.next
