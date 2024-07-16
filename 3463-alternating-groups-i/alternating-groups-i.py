@@ -4,7 +4,4 @@ class Solution:
         return sum(col[i] == col[i+2] != col[i+1] for i in range(len(col)-2))
 
     def numberOfAlternatingGroups(self, col: List[int]) -> int:
-        res = 0
-        for i in range(-2, len(col)-2):
-            res += (col[i] == col[i+2] != col[i+1])
-        return res
+        return sum(col[i] == col[i+2] != col[i+1] for i in range(-2, len(col)-2))
