@@ -5,12 +5,13 @@ class Solution:
         need, matchCnt, left, resStart, resLen = Counter(t), 0, 0, 0, len(s) + 1
         
         for right, ch in enumerate(s):
-            if ch in need:
-                need[ch] -= 1
-                matchCnt += need[ch] == 0
+            if ch not in need: continue
+            
+            need[ch] -= 1
+            matchCnt += need[ch] == 0
 
             while matchCnt == len(need):
-                # we found smaller window, update result
+                # we found a smaller window, update result
                 curWindowLen = right - left + 1
                 if curWindowLen < resLen:
                     resStart, resLen = left, curWindowLen
