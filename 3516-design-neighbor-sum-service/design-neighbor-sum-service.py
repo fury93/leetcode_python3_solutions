@@ -4,13 +4,16 @@ class NeighborSum:
         self.grid = grid
         self.size = len(grid)
         self.positions = [None] * self.size ** 2
+        self.adjacent = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+        self.diagonal = [(-1, -1), (1, 1), (-1, 1), (1, -1)]
         
         for i, j in product(range(self.size), range(self.size)):
             self.positions[grid[i][j]] = i, j
 
     def adjacentSum(self, value: int) -> int:
-        i, j = self.positions[value]
-        sm = 0
+        return self.calculateSum(value, self.adjacent)
+       
+
         sm += self.grid[i-1][j] if i >= 1 else 0 # top
         sm += self.grid[i+1][j] if i+1 < self.size else 0 # bottom
         sm += self.grid[i][j-1] if j >= 1 else 0 # left
@@ -18,11 +21,9 @@ class NeighborSum:
 
         return sm
 
-        
-
     def diagonalSum(self, value: int) -> int:
-        i, j = self.positions[value]
-        sm = 0
+        return self.calculateSum(value, self.diagonal)
+
         sm += self.grid[i-1][j-1] if i >= 1 and j >= 1 else 0 # top left
         sm += self.grid[i+1][j+1] if i+1 < self.size and j+1 < self.size else 0 # bottom right
         sm += self.grid[i-1][j+1] if i >= 1 and j+1 < self.size else 0 # top right
@@ -30,7 +31,14 @@ class NeighborSum:
 
         return sm
         
-
+    def calculateSum(self, value, neighborDiff):
+        i, j = self.positions[value]
+        sm = 0
+        for di, dj in neighborDiff:
+            ii, jj = i + di, j + dj
+            if 0 <= ii < self.size and 0 <= jj < self.size:
+                sm += self.grid[ii][jj]
+        return sm
 
 # Your NeighborSum object will be instantiated and called as such:
 # obj = NeighborSum(grid)
