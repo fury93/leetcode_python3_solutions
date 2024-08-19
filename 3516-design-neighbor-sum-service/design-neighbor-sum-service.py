@@ -1,4 +1,4 @@
-class NeighborSum:
+class NeighborSum2:
 
     def __init__(self, grid: List[List[int]]):
         self.grid = grid
@@ -25,7 +25,7 @@ class NeighborSum:
                 sm += self.grid[ii][jj]
         return sm
 
-class NeighborSum2:
+class NeighborSum:
 
     def __init__(self, grid: List[List[int]]):
         self.grid = grid
