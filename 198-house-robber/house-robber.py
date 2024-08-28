@@ -1,12 +1,8 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        if len(nums) == 1: return nums[0]
-
-        beforePrev = nums[0]
-        prev = max(nums[0], nums[1])
-
-        for i in range(2, len(nums)):
-            prev, beforePrev = max(prev, beforePrev + nums[i]), prev
+        beforePrev = prev = 0
+        for money in nums:
+            prev, beforePrev = max(prev, beforePrev + money), prev
 
         return prev
     
