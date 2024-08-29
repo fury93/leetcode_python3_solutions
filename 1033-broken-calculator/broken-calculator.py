@@ -1,5 +1,5 @@
 class Solution:
-    def brokenCalc(self, startValue: int, target: int) -> int:
+    def brokenCalc2(self, startValue: int, target: int) -> int:
         # move from target to startValue, so use opposite operations / and +
         def calculate(x, y):
             if x == y: # no more operations needed
@@ -12,3 +12,15 @@ class Solution:
                 return x - y
 
         return calculate(startValue, target)
+    
+    def brokenCalc(self, startValue: int, target: int) -> int:
+        total = 0
+        while target > startValue:
+            if target % 2 == 0:
+                target = target // 2
+                total += 1
+            else:
+                target = (target + 1) // 2
+                total += 2
+        
+        return total + startValue - target
