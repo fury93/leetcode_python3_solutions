@@ -14,8 +14,9 @@ class Solution:
             return head
 
         cur = head.next
-        while cur.val != insertVal and cur != head:
-            if cur.val < insertVal < cur.next.val: break # 1 => 2(insert) => 3
+        while cur != head:
+            # 1 => 2(insert) => 3 or 1 => 1 => 1(insert)
+            if cur.val <= insertVal <= cur.next.val: break 
             # 2 => 3(insert) => 1 or 2 => 0 (insert) => 1
             if cur.val > cur.next.val and (insertVal > cur.val or insertVal < cur.next.val): break 
             cur = cur.next
