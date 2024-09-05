@@ -42,17 +42,15 @@
 #        """
 
 class Solution:
+    # DFS
     def depthSum(self, nestedList: List[NestedInteger]) -> int:
         self.res = 0
         def calculator(items, depth):
-            levelSum = 0
             for item in items:
                 if item.isInteger():
-                    levelSum += item.getInteger()
+                    self.res += item.getInteger() * depth
                 else:
                     calculator(item.getList(), depth + 1)
-
-            self.res += levelSum * depth
 
         calculator(nestedList, 1)
 
