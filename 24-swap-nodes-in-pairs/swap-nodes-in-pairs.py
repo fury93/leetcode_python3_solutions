@@ -5,19 +5,17 @@
 #         self.next = next
 class Solution:
     # Recursion
-    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    def swapPairs2(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if head and head.next:
             head.next.next, head.next, head = head, self.swapPairs(head.next.next), head.next
         return head
             
     # Iterative
-    def swapPairs2(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        dummy = ListNode(0, head)
-        cur = dummy #previous node before swapping
-        while cur and cur.next and cur.next.next:
-            first, second = cur.next, cur.next.next
-            cur.next, first.next, second.next = second, second.next, first
-            cur = cur.next.next
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = last = ListNode(0, head)
+        while head and head.next:
+            first, second, head = head, head.next, head.next.next
+            last.next, last, first.next, second.next = second, first, second.next, first
             
         return dummy.next
         
