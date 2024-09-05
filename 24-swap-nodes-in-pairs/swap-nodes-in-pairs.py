@@ -6,14 +6,10 @@
 class Solution:
     # Recursion
     def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        def swap(cur):
-            if cur and cur.next:
-                 cur.next.next, cur.next, cur = cur, swap(cur.next.next), cur.next
-            return cur
-        return swap(head)
+        if head and head.next:
+            head.next.next, head.next, head = head, self.swapPairs(head.next.next), head.next
+        return head
             
-           
-
     # Iterative
     def swapPairs2(self, head: Optional[ListNode]) -> Optional[ListNode]:
         dummy = ListNode(0, head)
