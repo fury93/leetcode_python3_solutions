@@ -1,8 +1,6 @@
 class Solution:
     def missingRolls(self, rolls: List[int], mean: int, n: int) -> List[int]:
-        diceCnt = len(rolls) + n
-        expectedSum = diceCnt * mean - sum(rolls)
-
+        expectedSum = (len(rolls) + n) * mean - sum(rolls)
         if expectedSum < n or expectedSum > n * 6:
             return []
 
