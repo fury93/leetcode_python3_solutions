@@ -1,15 +1,15 @@
 class Solution:
     def canThreePartsEqualSum(self, arr: List[int]) -> bool:
-        S = sum(arr)
-        if sum(arr) % 3:
-            return False
+        sm = sum(arr)
+        if sm % 3: return False
         
-        average, cnt, prefix = S // 3, 0, 0
+        average, cnt, prefix = sm // 3, 0, 0
         for n in arr:
             prefix += n
             if prefix == average:
                 cnt +=1
+                if cnt == 3: return True
                 prefix = 0
             
-        return cnt >= 3
+        return False
 
