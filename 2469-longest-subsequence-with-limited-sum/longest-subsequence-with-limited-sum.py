@@ -1,5 +1,10 @@
 class Solution:
     def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
+        prefix = list(accumulate(sorted(nums)))
+        return [bisect_right(prefix, q) for q in queries]
+
+
+    def answerQueries2(self, nums: List[int], queries: List[int]) -> List[int]:
         nums.sort()
         for i in range(1, len(nums)):
             nums[i] += nums[i-1]
