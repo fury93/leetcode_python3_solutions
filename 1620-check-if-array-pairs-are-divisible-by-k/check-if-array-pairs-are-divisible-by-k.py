@@ -6,7 +6,7 @@ class Solution:
             modulo[mod] += 1
 
         if modulo[0] & 1: return False
-        for m in range(1, k):
+        for m in range(1, k // 2 + 1):
             if modulo[k-m] != modulo[m]: return False
 
         return True
