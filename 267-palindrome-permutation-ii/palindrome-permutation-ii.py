@@ -17,8 +17,7 @@ class Solution:
 
         def backtrack(perm):
             if len(perm) == maxLen:
-                palindrome = ''.join(perm + [singleChar] + perm[::-1])
-                res.append(palindrome)
+                res.append(''.join(perm + [singleChar] + perm[::-1]))
                 return
             
             for i in range(len(freq)):
