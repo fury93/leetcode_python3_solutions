@@ -3,14 +3,15 @@ class Solution:
         freq = [0] * 26
         for ch in s:
             freq[ord(ch) - 97] += 1
-        
+        # check if possible to create palindrome, count of odd symbols max is 1
         if sum(cnt & 1 for cnt in freq) > 1: return []
 
+        # remove half of symbols and find a single odd symbol if exists
         singleChar = ''
         for i, cnt in enumerate(freq):
             if cnt & 1:
                 singleChar = chr(i + 97)
-            freq[i] = cnt // 2 # remove half of symbols
+            freq[i] = cnt // 2 
         
         res, maxLen = [], sum(freq)
 
