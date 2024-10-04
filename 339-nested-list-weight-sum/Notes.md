@@ -1,1 +1,1 @@
-<h2>nested-list-weight-sum Notes</h2><hr>[ Time taken: 5 m 35 s ]
+<h2>nested-list-weight-sum Notes</h2><hr>[ Time taken: 7 m 51 s ]
