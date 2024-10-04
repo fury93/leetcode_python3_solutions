@@ -42,8 +42,22 @@
 #        """
 
 class Solution:
-    # DFS
+    # BFS
     def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        res, q, depth = 0, deque(nestedList), 1
+        while q:
+            for _ in range(len(q)):
+                item = q.popleft()
+                if item.isInteger():
+                    res += item.getInteger() * depth
+                else:
+                    q.extend(item.getList())
+            depth += 1
+
+        return res
+
+    # DFS
+    def depthSum2(self, nestedList: List[NestedInteger]) -> int:
         self.res = 0
         def calculator(items, depth):
             for item in items:
