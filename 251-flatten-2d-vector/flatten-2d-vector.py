@@ -1,4 +1,24 @@
+# Using iterator
 class Vector2D:
+
+    def __init__(self, vec: List[List[int]]):
+        def generator(vec):
+            for row in vec:
+                for val in row:
+                    yield val
+        
+        self.gen = generator(vec)
+        self.cur = next(self.gen, None)
+
+    def next(self) -> int:
+        res = self.cur
+        self.cur = next(self.gen, None)
+        return res
+        
+    def hasNext(self) -> bool:
+        return self.cur is not None
+
+class Vector2D_2:
 
     def __init__(self, vec: List[List[int]]):
         self.vec = vec
