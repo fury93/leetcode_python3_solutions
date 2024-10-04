@@ -8,17 +8,15 @@ class Employee:
 """
 
 class Solution:
+    # BFS
     def getImportance(self, employees: List['Employee'], id: int) -> int:
-        idToIndex, subordinates = {}, None
-        for i, employee in enumerate(employees):
-            idToIndex[employee.id] = i
-
-        totalImportance, subordinates = 0, [id]
-        while subordinates:
-            employeeId = subordinates.pop()
-            employee = employees[idToIndex[employeeId]]
+        employeeById = {e.id: e for e in employees}
+        totalImportance, q = 0, deque([id])
+        
+        while q:
+            employee = employeeById[q.popleft()]
             totalImportance += employee.importance
-            subordinates.extend(employee.subordinates)
+            q.extend(employee.subordinates)
 
         return totalImportance
             
