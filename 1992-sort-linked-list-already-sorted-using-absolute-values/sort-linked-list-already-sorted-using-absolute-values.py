@@ -5,12 +5,11 @@
 #         self.next = next
 class Solution:
     def sortLinkedList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        cur = head
-        while cur and cur.next:
-            nxt = cur.next
-            if nxt.val < 0:
-                cur.next, nxt.next, head = nxt.next, head, nxt
+        prev = head
+        while cur:=prev.next:
+            if cur.val < 0:
+                prev.next, cur.next, head = cur.next, head, cur
             else:
-                cur = nxt
+                prev = cur
         
         return head
