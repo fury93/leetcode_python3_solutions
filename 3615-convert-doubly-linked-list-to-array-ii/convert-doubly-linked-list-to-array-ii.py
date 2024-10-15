@@ -8,6 +8,19 @@ class Node:
 """
 class Solution:
     def toArray(self, node: 'Optional[Node]') -> List[int]:
+        res, cur = deque(), node
+        while cur.prev:
+            cur = cur.prev
+            res.appendleft(cur.val)
+
+        cur = node
+        while cur:
+            res.append(cur.val)
+            cur = cur.next
+        
+        return res
+    
+    def toArray2(self, node: 'Optional[Node]') -> List[int]:
         while node.prev:
             node = node.prev
 
