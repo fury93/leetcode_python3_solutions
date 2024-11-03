@@ -1,6 +1,18 @@
+# https://codeforces.com/blog/entry/15296
+# https://www.reddit.com/r/leetcode/comments/1gifxtk/google_interview_problem_everyone_is_getting/
+# Follow-up:
+# Two types of logs
+# Add Friend - A and B become friends
+# Remove Friend - If A and B are friends, unfriend them
+# Two people can be connected and disconnected multiple times.
+# Given this, find the earliest timestamp when all of them become friends
+
 class Solution:
     def earliestAcq(self, logs: List[List[int]], n: int) -> int:
-        relationsRemaining, uf = n-1, UnionFind(n)
+        relationsRemaining = n-1
+        if len(logs) < relationsRemaining: return -1
+        
+        uf = UnionFind(n)
         for time, fr1, fr2 in sorted(logs, key = lambda x: x[0]):
             if not uf.connected(fr1, fr2):
                 uf.union(fr1, fr2)
