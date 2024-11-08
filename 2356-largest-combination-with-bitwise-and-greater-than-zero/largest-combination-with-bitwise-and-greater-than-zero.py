@@ -1,10 +1,9 @@
 class Solution:
     def largestCombination(self, candidates):
-        max_count = 0  # Variable to track the maximum count of set bits.
-        for i in range(24):
-            count = 0  # Count of numbers with the i-th bit set.
-            for num in candidates:
-                if (num & (1 << i)) != 0:  # Check if the i-th bit is set.
-                    count += 1
-            max_count = max(max_count, count)  # Update the maximum count.
-        return max_count
+        freq = [0] * 24 # 2**24 > 10**7 (max possible value)
+        for n in candidates:
+            for i in range(24):
+                if n & (1 << i):
+                    freq[i] += 1
+
+        return max(freq)
