@@ -1,29 +1,37 @@
 # Write your MySQL query statement below
-with recursive month as (
-    select 1 as month
-    union
-    select month + 1 as month from month where month < 10
-)
 
-, month_rides as(
-    select   
-        MONTH(r.requested_at) as month,
-        sum(a.ride_distance) as ride_distance,
-        sum(a.ride_duration) as ride_duration
-    from Rides r 
-    join AcceptedRides a on a.ride_id = r.ride_id
-    where YEAR(r.requested_at) = '2020'
-    group by month
-)
+# create 12 month table
+WITH RECURSIVE month AS (
+    SELECT 1 AS month
+    UNION
+    SELECT month+1 AS month
+    FROM month where month <12
+),
 
-select 
-    m.month,
-    ifnull(round(sum(mr.ride_distance)/3,2),0) as average_ride_distance,
-    ifnull(round(sum(mr.ride_duration)/3,2),0) as average_ride_duration
-from month m
-left join month_rides mr
-on ((mr.month - m.month = 0) 
-    or (mr.month - m.month = 1)
-    or (mr.month - m.month = 2))
-group by 1
-order by 1
+# create monthly rides
+month_rides AS (
+    SELECT Month(r.requested_at) AS month,
+    SUM(a.ride_distance) AS ride_distance,
+    SUM(a.ride_duration) AS ride_duration
+    FROM Rides r
+    LEFT JOIN AcceptedRides a
+    ON r.ride_id = a.ride_id
+    WHERE YEAR(requested_at) = '2020'
+    GROUP BY month
+),
+
+# create 12 month monthly rides
+every_month_ride AS (
+    SELECT m.month,
+    IFNULL(r.ride_distance,0) AS ride_distance,
+    IFNULL(r.ride_duration,0) AS ride_duration
+    FROM month m LEFT JOIN month_rides r
+    ON m.month = r.month
+    )
+
+    SELECT month,
+    ROUND(AVG(ride_distance) OVER(ORDER BY month ROWS BETWEEN CURRENT ROW AND 2 FOLLOWING), 2) AS average_ride_distance,
+    ROUND(AVG(ride_duration) OVER(ORDER BY month ROWS BETWEEN CURRENT ROW AND 2 FOLLOWING), 2) AS average_ride_duration
+    FROM every_month_ride
+    ORDER BY month
+    LIMIT 10
