@@ -3,7 +3,7 @@ class Solution:
         nums.sort()
         res, ln = 0, len(nums)
         for i, n in enumerate(nums):
-            left = min(bisect_left(nums, lower - n, i + 1), ln)
+            left = bisect_left(nums, lower - n, i + 1)
             right = bisect_right(nums, upper - n, i + 1)
             res += right - left
 
