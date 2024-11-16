@@ -10,7 +10,7 @@ class Solution:
             else:
                 power = 1
 
-            if i - k + 1 >= 0 and power >= k:
+            if power >= k:
                 res[i - k + 1] = nums[i]
 
         return res
