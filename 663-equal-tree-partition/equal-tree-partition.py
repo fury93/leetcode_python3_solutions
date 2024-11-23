@@ -4,7 +4,26 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution(object):
+class Solution:
+    def checkEqualTree(self, root: Optional[TreeNode]) -> bool:
+        self.subtreeSum = set()
+        treeSum = self.sum(root.left) + self.sum(root.right)+root.val
+        if treeSum%2 != 0:
+            return False
+        return treeSum /2 in self.subtreeSum
+                 
+
+    def sum(self, root):
+        if not root:
+            return 0
+        leftSum = self.sum(root.left)
+        rightSum = self.sum(root.right)
+        rootSum = leftSum +rightSum + root.val
+        self.subtreeSum.add(rootSum)
+
+        return rootSum
+        
+class Solution3:
     def checkEqualTree(self, root):
         """
         :type root: TreeNode
@@ -33,7 +52,7 @@ class Solution(object):
             if right_sum * 2 == self.total_sum:
                 return True
         return self.dfs(root.left) or self.dfs(root.right)
-        
+
 class Solution2:
     def checkEqualTree(self, root):
         seen = []
