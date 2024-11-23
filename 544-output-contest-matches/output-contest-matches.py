@@ -1,4 +1,18 @@
-class Solutio2(object):
+class Solution:
+    def findContestMatch(self, n: int) -> str:
+        ans = [x for x in range(1,n+1)]
+        while len(ans)!=1:
+            i = 0
+            j = len(ans)-1
+            temp = []
+            while i<j:
+                temp.append(f'({ans[i]},{ans[j]})')
+                i+=1
+                j-=1
+            ans = temp
+        return ans[0]
+        
+class Solutio1(object):
     def findContestMatch(self, n):
         team = map(str, range(1, n+1))
 
@@ -9,7 +23,7 @@ class Solutio2(object):
 
         return team[0]
 
-class Solution(object):
+class Solution2(object):
     def findContestMatch(self, n):
         team = []
         ans = []
