@@ -62,3 +62,34 @@ class Solution:
         directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
         visited = set()
         backtrack()
+
+class Solution2:
+    def cleanRoom(self, robot):
+        """
+        :type robot: Robot
+        :rtype: None
+        """
+        return setattr(robot, "needClean", 0)
+
+        directions = ((-1, 0), (0, 1), (1, 0), (0, -1))
+        cleaned = set()
+
+        def backtrack(direction, i, j):
+            cleaned.add((i, j))
+            robot.clean()
+            for delta_d in range(4):
+                d = (direction + delta_d) % 4
+                delta_i, delta_j = directions[d]
+                x, y = i + delta_i, j + delta_j
+                if (x, y) not in cleaned and robot.move():
+                    backtrack(d, x, y)
+                    # undo robot.move()
+                    robot.turnRight()
+                    robot.turnRight()
+                    robot.move()
+                    robot.turnRight()
+                    robot.turnRight()
+                robot.turnRight()
+
+        # obstacles = set()
+        backtrack(0, 0, 0)
