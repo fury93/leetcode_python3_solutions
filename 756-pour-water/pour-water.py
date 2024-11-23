@@ -1,4 +1,23 @@
 class Solution:
+    def pourWater(self, heights: List[int], volume: int, k: int) -> List[int]:
+        pos = k
+        while volume > 0:
+            while pos - 1 >= 0 and heights[pos - 1] <= heights[pos]:
+                pos -= 1
+
+            while pos + 1 < len(heights) and heights[pos + 1] <= heights[pos]:
+                pos += 1
+            
+            while pos > k and heights[pos] == heights[pos - 1]:
+                pos -= 1
+
+            heights[pos] += 1
+            volume -= 1
+        
+        return heights
+
+
+class Solution2:
     def pourWater(self, heights, V, K):
         for _ in range(V):
             index = -1
