@@ -37,6 +37,33 @@ class FileSharing:
             self.users[userID].append(chunkID)
         return res
 
+class FileSharing2:
+
+    def __init__(self, m: int):
+        self.user_to_chunks = {}
+        self.available_ids = []
+        heapq.heappush(self.available_ids, 1) 
+
+    def join(self, ownedChunks: List[int]) -> int:
+        id = heapq.heappop(self.available_ids)
+        if len(self.available_ids) == 0:
+            heapq.heappush(self.available_ids, id + 1) 
+        self.user_to_chunks[id] = set(ownedChunks)
+        return id
+
+    def leave(self, userID: int) -> None:
+        heapq.heappush(self.available_ids, userID)
+        del self.user_to_chunks[userID]
+
+    def request(self, userID: int, chunkID: int) -> List[int]:
+        chunk_owners = []
+        for ownerID, chunkIDs in self.user_to_chunks.items():
+            if chunkID in chunkIDs:
+                chunk_owners.append(ownerID)
+        if len(chunk_owners) > 0:
+            self.user_to_chunks[userID].add(chunkID)
+        return sorted(chunk_owners)
+
 # Your FileSharing object will be instantiated and called as such:
 # obj = FileSharing(m)
 # param_1 = obj.join(ownedChunks)
