@@ -13,9 +13,6 @@ class Solution:
         
         return res
             
-            
-
-
     # todo in progress
     def findPermutation2(self, s: str) -> List[int]:
         res, maxN, decrCnt = [None] * (len(s) + 1), 1, 0
