@@ -1,4 +1,26 @@
 class Solution:
+    def sequenceReconstruction(self, nums: List[int], sequences: List[List[int]]) -> bool:
+        dicti = {num:i for i, num in enumerate(nums)}
+        visited = set()
+
+        for numss in sequences:
+            prev_num, prev_indx = -1, -1
+            for num in numss:
+                if num not in dicti:
+                    return False
+                curr_indx = dicti[num]
+                if prev_indx+1 == curr_indx and num not in visited:
+                    visited.add(num)
+                elif prev_indx >= curr_indx:
+                    return False
+                prev_num, prev_indx = num, curr_indx
+        return len(visited) == len(nums)
+
+# time complexity: O(n)
+# space complexity: O(n)
+        
+        
+class Solution2:
     def sequenceReconstruction(self, org: List[int], seqs: List[List[int]]) -> bool:
         values = {val for seq in seqs for val in seq}
         graphs = {val:[] for val in values}
