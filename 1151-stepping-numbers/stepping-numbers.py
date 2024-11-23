@@ -1,5 +1,24 @@
 class Solution:
     def countSteppingNumbers(self, low: int, high: int) -> List[int]:
+        ans = []
+        if low == 0:
+            ans.append(0)
+        q = deque(range(1, 10))
+        while q:
+            v = q.popleft()
+            if v > high:
+                break
+            if v >= low:
+                ans.append(v)
+            x = v % 10
+            if x:
+                q.append(v * 10 + x - 1)
+            if x < 9:
+                q.append(v * 10 + x + 1)
+        return ans
+        
+class Solution2:
+    def countSteppingNumbers(self, low: int, high: int) -> List[int]:
         q1, q2 = set(), collections.deque(range(10))
         while q2:
             n = q2.popleft()
