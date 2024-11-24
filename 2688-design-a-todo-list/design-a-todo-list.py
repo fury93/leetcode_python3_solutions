@@ -37,11 +37,11 @@ class TodoList:
 
     # ordered by dueDate and only not completed
     def getAllTasks(self, userId: int) -> List[str]:
-        return map(lambda task: task.getName(), self.sortTasksByDueDate(self.getActiveTaskByUser(userId)))
+        return list(map(lambda task: task.getName(), self.sortTasksByDueDate(self.getActiveTaskByUser(userId))))
         
     def getTasksForTag(self, userId: int, tag: str) -> List[str]:
         tasksForTag = filter(lambda task: task.hasTag(tag), self.getActiveTaskByUser(userId))
-        return map(lambda task: task.getName(), self.sortTasksByDueDate(tasksForTag))
+        return list(map(lambda task: task.getName(), self.sortTasksByDueDate(tasksForTag)))
         
     def completeTask(self, userId: int, taskId: int) -> None:
         task = self.usersTaks[userId].get(taskId)
@@ -49,10 +49,10 @@ class TodoList:
             task.markCompleted()
 
     def getActiveTaskByUser(self, userId):
-        return filter(lambda task: task.active(), self.usersTaks[userId].values())
+        return list(filter(lambda task: task.active(), self.usersTaks[userId].values()))
 
     def sortTasksByDueDate(self, tasks):
-        return sorted(tasks, key = lambda task: task.getDueDate())
+        return list(sorted(tasks, key = lambda task: task.getDueDate()))
         
 
 # Your TodoList object will be instantiated and called as such:
