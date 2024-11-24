@@ -1,5 +1,25 @@
 class Solution:
     def convertArray(self, nums: List[int]) -> int:
+        res1 = 0
+        min_heap = []
+        for n in nums:
+            if min_heap and min_heap[0] < n:
+                res1 += n - heapq.heappop(min_heap)
+                heapq.heappush(min_heap, n)
+            heapq.heappush(min_heap, n)
+        max_heap = []
+        res2 = 0
+        for n in nums:
+            if max_heap and max_heap[0] < -n:
+                res2 += - n - heapq.heappop(max_heap)
+                heapq.heappush(max_heap, -n)
+
+            heapq.heappush(max_heap, -n)
+        return min(res1, res2)
+        
+        
+class Solution2:
+    def convertArray(self, nums: List[int]) -> int:
 	
 		### Some utilities. Should be easy to implement.
 		
