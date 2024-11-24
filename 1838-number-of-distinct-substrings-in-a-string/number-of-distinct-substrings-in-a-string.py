@@ -64,3 +64,60 @@ class Solution:
         lcp = self.build_lcp(s, sa)
         n = len(s)
         return ((n * (n + 1)) // 2) - sum(lcp)
+
+class Solution2:
+    def countDistinct(self, s: str) -> int:
+        automaton = SuffixAutomaton(s)
+        return automaton.count_substrings()
+
+class State:
+    def __init__(self):
+        self.len = 0
+        self.link = -1
+        self.transitions = [-1] * 26
+    
+    def clone(self):
+        res = State()
+        res.link = self.link
+        res.transitions = self.transitions.copy()
+        return res
+
+class SuffixAutomaton:
+    def __init__(self, s: str):
+        self.states = [State()]
+        self.latest = 0
+
+        for letter in s:
+            pos = ord(letter) - 97
+            curr = len(self.states)
+            state = State()
+            state.len = self.states[self.latest].len + 1
+            self.states.append(state)
+            p = self.latest
+            while p != -1 and self.states[p].transitions[pos] == -1:
+                self.states[p].transitions[pos] = curr
+                p = self.states[p].link
+            if p == -1:
+                state.link = 0
+            else:
+                p_state = self.states[p]
+                q = p_state.transitions[pos]
+                q_state = self.states[q]
+                if q_state.len == p_state.len + 1:
+                    state.link = q
+                else:
+                    clone = len(self.states)
+                    clone_state = q_state.clone()
+                    clone_state.len = p_state.len + 1
+                    self.states.append(clone_state)
+                    while p != -1 and self.states[p].transitions[pos] == q:
+                        self.states[p].transitions[pos] = clone
+                        p = self.states[p].link
+                    state.link = q_state.link = clone
+            self.latest = curr
+        self.n = len(self.states)
+
+    def count_substrings(self):
+        res = 0
+        for state in islice(self.states, 1, self.n):
+            res += state.len - self.states[state.link].len
