@@ -38,4 +38,5 @@ However, &quot;apple&quot; is lexicographically smaller, so we return that.
 	<li><code>1 &lt;= words.length &lt;= 10<sup>5</sup></code></li>
 	<li><code>1 &lt;= words[i].length &lt;= 10<sup>5</sup></code></li>
 	<li><code>1 &lt;= sum(words[i].length) &lt;= 10<sup>5</sup></code></li>
+	<li><code>words[i]</code> consists only of lowercase English letters.</li>
 </ul>
