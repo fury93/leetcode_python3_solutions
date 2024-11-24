@@ -1,5 +1,28 @@
 class Solution:
     def countSubranges(self, nums1: List[int], nums2: List[int]) -> int:
+        n = len(nums1)
+        dp = collections.defaultdict(int)
+        MOD = 10 ** 9 + 7
+        res = 0
+
+        for i in range(n):
+            num1, num2 = nums1[i], nums2[i]
+            tmp = collections.defaultdict(int)
+            tmp[num1] += 1
+            tmp[-num2] += 1
+
+            for psum, freq in dp.copy().items():
+                tmp[psum + num1] = (tmp[psum + num1] + freq) % MOD
+                tmp[psum - num2] = (tmp[psum - num2] + freq) % MOD
+            
+            res = (res + tmp[0]) % MOD
+            dp = tmp
+        
+        return res
+        
+                    
+class Solution2:
+    def countSubranges(self, nums1: List[int], nums2: List[int]) -> int:
         MOD = int(1e9) + 7
         N = len(nums1)
         DP = defaultdict(int)
