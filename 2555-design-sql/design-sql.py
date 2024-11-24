@@ -6,7 +6,6 @@ class SQL:
     def insertRow(self, name: str, row: List[str]) -> None:
         self.d[name].append(row)
         
-
     def deleteRow(self, name: str, rowId: int) -> None:
         pass
 
