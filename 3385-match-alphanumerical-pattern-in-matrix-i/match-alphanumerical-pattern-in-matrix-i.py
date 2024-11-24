@@ -1,47 +1,43 @@
-class Solution:
+from collections import defaultdict
+
+class Solution(object):
     def findPattern(self, board, pattern):
-        def check_function(s,t):
-            dict_s, dict_t = {}, {}
+        M, N = len(board), len(board[0])
+        P, Q = len(pattern), len(pattern[0])
 
-            for i,j in zip(s,t):
-                if i.isdigit() and j.isdigit():
-                    if i != j: return False 
-                else:
-                    if i not in dict_s:
-                        dict_s[i] = j 
+        def matches(r, c):
+            # Dictionary to store character to digit mapping
+            char_to_digit = {}
+            digit_seen = set()
+            
+            for i in range(P):
+                for j in range(Q):
+                    p_char = pattern[i][j]
+                    b_digit = board[r + i][c + j]
+                    
+                    if p_char.isdigit():
+                        # Pattern has a digit; it must match the board digit
+                        if int(p_char) != b_digit:
+                            return False
                     else:
-                        if dict_s[i] != j: 
-                            return False 
+                        # Pattern has a letter
+                        if p_char in char_to_digit:
+                            # Ensure consistent mapping for this letter
+                            if char_to_digit[p_char] != b_digit:
+                                return False
+                        else:
+                            # Map letter to board digit, ensuring it's unique
+                            if b_digit in digit_seen:
+                                return False
+                            char_to_digit[p_char] = b_digit
+                            digit_seen.add(b_digit)
+            return True
 
-            for i,j in zip(t,s):
-                if i.isdigit() and j.isdigit():
-                    if i != j: return False 
-                else:
-                    if i not in dict_t:
-                        dict_t[i] = j 
-                    else:
-                        if dict_t[i] != j:
-                            return False 
-
-            return True 
-
-
-        m, n, dict1, ans = len(pattern), len(pattern[0]), defaultdict(int), "".join(pattern)
-
-        for i in range(len(board)-m+1):
-            for j in range(len(board[0])-n+1):
-                result = ""
-                for k in range(i,i+m):
-                    for l in range(j,j+n):
-                        result += str(board[k][l])
-                dict1[(i,j)] = check_function(result,ans)
-
-        bill_gates = []
-
-        for i in dict1:
-            if dict1[i] == True:
-                bill_gates.append([i[0],i[1]])
-
-        bill_gates.sort(key = lambda x:(x[0],x[1]))
-
-        return bill_gates[0] if bill_gates else [-1,-1]
+        # Iterate over all possible top-left corners of P x Q submatrices in board
+        for r in range(M - P + 1):
+            for c in range(N - Q + 1):
+                if matches(r, c):
+                    return [r, c]
+        
+        # If no match is found, return [-1, -1]
+        return [-1, -1]
