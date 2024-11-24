@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/linked-list-frequency">Linked List Frequency</a></h2> <img src='https://img.shields.io/badge/Difficulty-Medium-orange' alt='Difficulty: Medium' /><hr><p>Given the <code>head</code> of a linked list containing <code>k</code> <strong>distinct</strong> elements, return <em>the head to a linked list of length </em><code>k</code><em> containing the <span data-keyword="frequency-linkedlist">frequency</span> of each <strong>distinct</strong> element in the given linked list in <strong>any order</strong>.</em></p>
+<h2><a href="https://leetcode.com/problems/linked-list-frequency">Linked List Frequency</a></h2> <img src='https://img.shields.io/badge/Difficulty-Easy-brightgreen' alt='Difficulty: Easy' /><hr><p>Given the <code>head</code> of a linked list containing <code>k</code> <strong>distinct</strong> elements, return <em>the head to a linked list of length </em><code>k</code><em> containing the <span data-keyword="frequency-linkedlist">frequency</span> of each <strong>distinct</strong> element in the given linked list in <strong>any order</strong>.</em></p>
 
 <p>&nbsp;</p>
 <p><strong class="example">Example 1: </strong></p>
