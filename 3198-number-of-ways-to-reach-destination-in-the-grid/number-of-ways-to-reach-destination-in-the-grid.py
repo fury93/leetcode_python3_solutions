@@ -1,4 +1,24 @@
 class Solution:
+    def numberOfWays(
+        self, n: int, m: int, k: int, source: List[int], dest: List[int]
+    ) -> int:
+        a, b, c, d = 1, 1, 0, 0
+        M = 10**9 + 7
+        for i in range(2, k + 1):
+            d_ = ((m + n - 4) * d + a + b) % M
+            c_ = ((m - 1) * b + (n - 1) * a) % M
+            a_ = ((m - 1) * d + (n - 2) * a + c) % M
+            b_ = ((n - 1) * d + (m - 2) * b + c) % M
+            a, b, c, d = a_, b_, c_, d_
+        if source == dest:
+            return c
+        if dest[0] == source[0]:
+            return b
+        if dest[1] == source[1]:
+            return a
+        return d
+        
+class Solution2:
     def numberOfWays(self, n: int, m: int, k: int, source: List[int], dest: List[int]) -> int:
         MOD = 10**9 + 7
         dp = [[0]*4 for _ in range(k+1)]
