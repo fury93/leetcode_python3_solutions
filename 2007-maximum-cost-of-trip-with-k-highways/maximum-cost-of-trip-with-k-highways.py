@@ -1,4 +1,33 @@
 class Solution:
+    def maximumCost(self, n, highways, k):
+        graph = defaultdict(list)
+        for city1, city2, toll in highways:
+            graph[city1].append((city2, toll))
+            graph[city2].append((city1, toll))
+
+        max_cost = -1  
+
+        for start in range(n):
+            pq = [(-0, start, 0)]  
+            visited = [False] * n  
+
+            while pq:
+                current_fee, current_city, stops = heapq.heappop(pq)
+                current_fee = -current_fee 
+
+                visited[current_city] = True
+
+                if stops == k:
+                    max_cost = max(max_cost, current_fee)
+                    break
+
+                for neighbor, toll in graph[current_city]:
+                    if not visited[neighbor]:
+                        heapq.heappush(pq, (-(current_fee + toll), neighbor, stops + 1))
+
+        return max_cost
+
+class Solution2:
     def maximumCost(self, n: int, highways: List[List[int]], k: int) -> int:
         if k + 1 > n:
             return -1
