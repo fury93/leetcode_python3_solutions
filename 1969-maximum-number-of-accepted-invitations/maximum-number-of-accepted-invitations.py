@@ -29,3 +29,23 @@ class Solution:
             dfs(boy, set())
             
         return len(matches)
+
+from scipy.optimize import linear_sum_assignment
+class Solution2:
+    def maximumInvitations(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        
+        """
+        max matching with hungarian minimum cost bipartite matching: linear_sum_assignment
+        """
+        size = max(m,n)
+        cost_matrix = [[0]*size for i in range(size)]
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    cost_matrix[i][j] = -1
+        
+        row_idx, col_idx = linear_sum_assignment(cost_matrix)
+
+        return sum(1 for i,j in zip(row_idx, col_idx) if cost_matrix[i][j]!=0)
+        
