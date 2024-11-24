@@ -1,4 +1,25 @@
 class Solution:
+    def isThereAPath(self, grid: List[List[int]]) -> bool:
+        m, n = len(grid), len(grid[0])
+        if (m + n) % 2 == 0:
+            return False
+
+        target = (m + n - 1) / 2
+        
+        @cache
+        def helper(y, x, summ):
+            if not (0 <= y < m and 0 <= x < n):
+                return False
+            
+            summ += grid[y][x]
+            if y == m - 1 and x == n - 1 and summ == target:
+                return True
+
+            return helper(y + 1, x, summ) or helper(y, x + 1, summ)
+        
+        return helper(0, 0, 0)
+
+class Solution2:
     def isThereAPath(self, grid: list[list[int]]) -> bool:
         rows, cols = len(grid), len(grid[0])
 
