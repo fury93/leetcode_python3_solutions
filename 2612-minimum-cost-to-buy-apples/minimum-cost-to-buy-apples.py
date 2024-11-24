@@ -41,3 +41,33 @@ class Solution:
                     heapq.heappush(heap, (result[neighbor], neighbor))
 
         return result       
+
+class Solution2:
+    def minCost(self, n: int, roads: List[List[int]], apple: List[int], k: int) -> List[int]:
+        
+        g = defaultdict(dict)                                         # [1] convert edge data to
+        for u, v, w in roads:                                         #     a bidirectional (!)
+            g[u-1][v-1] = g[v-1][u-1] = w                             #     adjacency map
+            
+        def bfs(i):
+            fwd_cost = [float('inf')] * n                             # [2] for each node, we keep track
+            ret_cost = [float('inf')] * n                             #     of the forward travel cost
+            fwd_cost[i] = 0                                           #     and return travel cost
+
+            dq = deque([i])                                           # [3] starting with the i-th city,  
+            while dq:                                                 #     cities (nodes) are traversed 
+                city_from = dq.popleft()                              #     using the standard Dijkstra's 
+                cost_from = fwd_cost[city_from]                       #     approach, i.e., extending the
+                                                                      #     path with closest neighbours 
+                for city_to, cost_to in g[city_from].items():         #     on each iteration
+                    
+                    cost = cost_from + cost_to                        # [4] prune if the city was already visited
+                    if cost >= fwd_cost[city_to]: continue            #     with a better FORWARD travelling cost
+
+                    fwd_cost[city_to] = cost                          # [5] save both forward travelling cost...
+                    ret_cost[city_to] = cost*(k+1) + apple[city_to]   # [6] ...and return travelling cost
+                    dq.append(city_to)
+                        
+            return min(apple[i], min(ret_cost))                       # [7] try buying from the i-th city itself
+        
+        return [bfs(i) for i in range(n)]
