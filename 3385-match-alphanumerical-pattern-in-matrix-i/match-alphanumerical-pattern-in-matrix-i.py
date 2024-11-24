@@ -1,45 +1,47 @@
 class Solution:
-    def findPattern(self, board: List[List[int]], pattern: List[str]) -> List[int]:
-        # just move a pattern over the matrix and check each for matching
-        # it seems that N pattern comparisons for each col and M for each row
-        # comparison is O(mn) where mn is pattern dimensions and for each row and col of board that becomes O(mnMN)
-        
-        pattern_ymax = len(pattern)
-        pattern_xmax = len(pattern[0])
+    def findPattern(self, board, pattern):
+        def check_function(s,t):
+            dict_s, dict_t = {}, {}
 
-        def matches(y, x):
-            if y + pattern_ymax > ymax or x + pattern_xmax > xmax:
-                return False
-            
-            mapping = dict()
-            for ycurr in range(pattern_ymax):
-                for xcurr in range(pattern_xmax):
-                    p_val = pattern[ycurr][xcurr]
-                    board_val = board[y+ycurr][x+xcurr]
-                    # number
-                    if p_val.isdigit():
-                        if p_val != str(board_val):
-                            return False
-                        continue
-                    # letter
-                    if p_val in mapping:
-                        if mapping[p_val] != board_val:
-                            return False
-                        continue
-                    if board_val in mapping:
-                        if mapping[board_val] != p_val:
-                            return False
-                        continue
-                    mapping[p_val] = board_val
-                    mapping[board_val] = p_val
+            for i,j in zip(s,t):
+                if i.isdigit() and j.isdigit():
+                    if i != j: return False 
+                else:
+                    if i not in dict_s:
+                        dict_s[i] = j 
+                    else:
+                        if dict_s[i] != j: 
+                            return False 
 
-            return True
-        
-        ymax = len(board)
-        xmax = len(board[0])
-        for y in range(ymax):
-            for x in range(xmax):
-                if matches(y, x):
-                    return [y, x]
-        return [-1, -1]
-        
+            for i,j in zip(t,s):
+                if i.isdigit() and j.isdigit():
+                    if i != j: return False 
+                else:
+                    if i not in dict_t:
+                        dict_t[i] = j 
+                    else:
+                        if dict_t[i] != j:
+                            return False 
+
+            return True 
+
+
+        m, n, dict1, ans = len(pattern), len(pattern[0]), defaultdict(int), "".join(pattern)
+
+        for i in range(len(board)-m+1):
+            for j in range(len(board[0])-n+1):
+                result = ""
+                for k in range(i,i+m):
+                    for l in range(j,j+n):
+                        result += str(board[k][l])
+                dict1[(i,j)] = check_function(result,ans)
+
+        bill_gates = []
+
+        for i in dict1:
+            if dict1[i] == True:
+                bill_gates.append([i[0],i[1]])
+
+        bill_gates.sort(key = lambda x:(x[0],x[1]))
+
+        return bill_gates[0] if bill_gates else [-1,-1]
