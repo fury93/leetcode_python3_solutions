@@ -1,5 +1,35 @@
 class Solution:
     def minimumDistance(self, n: int, edges: List[List[int]], s: int, marked: List[int]) -> int:
+        marked = set(marked)
+        graph = defaultdict(list)
+
+        for a, b , w in edges:
+            graph[a].append((b,w))
+
+        heap = [(0, s)]
+
+        seen = set()
+
+        while heap:
+            wgt, node = heapq.heappop(heap)
+
+            if node in seen:
+                continue
+
+            seen.add(node)
+
+            if node in marked:
+                return wgt
+
+
+
+            for child, weight in graph[node]:
+                heapq.heappush(heap, (wgt + weight, child))
+
+        return -1
+        
+class Solution2:
+    def minimumDistance(self, n: int, edges: List[List[int]], s: int, marked: List[int]) -> int:
         
         ## use dijkstra and return the minimum
         ## using dijkstra find minimum distance of all nodes from s
