@@ -1,5 +1,18 @@
 class Solution:
     def catchMaximumAmountofPeople(self, team: List[int], dist: int) -> int:
+        ans = j = 0
+        n = len(team)
+        for i, x in enumerate(team):
+            if x:
+                while j < n and (team[j] or i - j > dist):
+                    j += 1
+                if j < n and abs(i - j) <= dist:
+                    ans += 1
+                    j += 1
+        return ans
+        
+class Solution2:
+    def catchMaximumAmountofPeople(self, team: List[int], dist: int) -> int:
         not_it = it = ans = 0
         for _, is_it in enumerate(team):
             if is_it:                   # if is `it`
