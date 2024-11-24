@@ -1,5 +1,15 @@
 class Solution:
     def goodBinaryStrings(self, minLength: int, maxLength: int, oneGroup: int, zeroGroup: int) -> int:
+        Mod = 10**9+7
+        dp = [0]*(maxLength+1)
+        dp[0] = 1
+        for i in range(1,maxLength+1):
+            dp[i] = (dp[i-oneGroup]+dp[i-zeroGroup])%Mod
+
+        return sum(dp[minLength:maxLength+1])%Mod
+
+class Solution2:
+    def goodBinaryStrings(self, minLength: int, maxLength: int, oneGroup: int, zeroGroup: int) -> int:
         # MOD is the modulo constant for the result
         MOD = 10**9 + 7
         
