@@ -1,4 +1,25 @@
 class Solution:
+    def countQuadruples(self, f: str, s: str) -> int:
+        l = {}
+        r = {}
+        for i in range(len(f)):
+            if f[i] not in l:
+                l[f[i]] = i
+        for i in range(len(s) - 1, -1, -1):
+            if s[i] not in r:
+                r[s[i]] = i
+        res = defaultdict(int)
+        for i in range(26):
+            c = chr(ord('a') + i)
+            if c in l and c in r:
+                v = l[c] - r[c]
+                res[v] += 1
+        if not res: return 0
+        mi = min(res.keys())
+        return res[mi]
+
+        
+class Solution2:
     def countQuadruples(self, firstString: str, secondString: str) -> int:
         
         # 1. Find the first occurrence of each character in firstString.
