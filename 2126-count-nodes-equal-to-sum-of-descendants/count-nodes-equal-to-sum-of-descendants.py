@@ -5,6 +5,26 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    result: int = 0
+
+    def equalToDescendants(self, root: TreeNode | None) -> int:
+
+        def check_equal(node: TreeNode | None) -> int:
+            total = 0
+            if node.left:
+                total += check_equal(node.left)
+            if node.right:
+                total += check_equal(node.right)
+            if node.val == total:
+                self.result += 1
+
+            return total + node.val
+
+        check_equal(root)
+
+        return self.result
+        
+class Solution2:
     def equalToDescendants(self, root: Optional[TreeNode]) -> int:
         self.res = 0
         def dfs(node):
