@@ -1,19 +1,25 @@
-# TLE
-class Solution1:
+class Solution:
     def subarraysWithMoreZerosThanOnes(self, nums: List[int]) -> int:
-        nums = [i if i else -1 for i in nums]
         n = len(nums)
-        presum = [0] * (n + 1)
-        for i in range(1, n+1):
-            presum[i] = presum[i-1] + nums[i-1]
-        
-        cnt = Counter()
-        res = 0
-        mod = 1000000007
-        for i in range(n+1):
-            cnt[presum[i]] += 1 
-            res += sum([v for k, v in cnt.items() if k < presum[i]]) % mod
-        return res % mod
+        ans = 0
+        diff_count = [0] * (2 * n + 1)
+        diff_count[n] = 1
+
+        count = 0
+        idx = n
+
+        for num in nums:
+            if num == 1:
+                count += diff_count[idx]
+                idx += 1
+            else:
+                idx -= 1
+                count -= diff_count[idx]
+
+            ans += count
+            diff_count[idx] += 1
+
+        return ans % (10**9 + 7)
 
 class Solution2:
     def subarraysWithMoreZerosThanOnes(self, nums: List[int]) -> int:
@@ -46,7 +52,7 @@ class Solution2:
             
         return res % mod
 
-class Solution:
+class Solution3:
     def subarraysWithMoreZerosThanOnes(self, nums: List[int]) -> int:
         # O(n)
         nums = [1 if i == 1 else -1 for i in nums]
