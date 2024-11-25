@@ -1,4 +1,4 @@
-class Solution:
+class Solution0:
     def isMatch(self, text: str, pattern: str) -> bool:
         if not pattern:
             return not text
@@ -34,7 +34,7 @@ class Solution2:
 
         return dp(0, 0)
 
-class Solution3:
+class Solution:
     def isMatch(self, text: str, pattern: str) -> bool:
         dp = [[False] * (len(pattern) + 1) for _ in range(len(text) + 1)]
 
