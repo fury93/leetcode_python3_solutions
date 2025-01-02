@@ -1,6 +1,6 @@
 class Solution:
     def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
-        vowels = set(['a', 'e', 'o', 'i', 'u'])
+        vowels = set('aeiuo')
         prefix = [0] * (len(words) + 1)
 
         for i, w in enumerate(words, start = 1):
