@@ -5,9 +5,11 @@ class Solution:
             prev = -1
             for cur in col:
                 if prev >= cur:
-                    res += prev - cur + 1
-                    cur = prev + 1
-                prev = cur
+                    newCur = prev + 1
+                    res += newCur - cur
+                    prev = newCur
+                else:
+                    prev = cur
 
         return res
         
