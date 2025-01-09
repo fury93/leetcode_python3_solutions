@@ -6,8 +6,4 @@ class Solution:
                 return i // 3 + 1
             seen.add(nums[i])
         
-        return 0
-
-        
-
-        
+        return 0   
