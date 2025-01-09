@@ -1,7 +1,7 @@
 class Solution:
     def minimumOperations(self, nums: List[int]) -> int:
         seen = set()
-        for i in range(len(nums)-1, -1, -1):
+        for i in reversed(range(len(nums))):
             if nums[i] in seen:
                 return i // 3 + 1
             seen.add(nums[i])
