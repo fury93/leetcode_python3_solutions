@@ -1,36 +1,49 @@
 class TaskManager:
 
     def __init__(self, tasks: List[List[int]]):
-        self.tasks = SortedSet()
-        self.task_to_users = {}
-        self.task_to_priority = {}
-        for user_id, task_id, priority in tasks:
-            self.add(user_id, task_id, priority)
+        self.tasks = []
+        self.valid = {}
+
+        for user, task, priority in tasks:
+            t = (-priority, -task, user)
+            self.tasks.append(t)
+            self.valid[-task] = t
+        
+        heapify(self.tasks)
+       
 
     def add(self, userId: int, taskId: int, priority: int) -> None:
-        self.tasks.add((priority, taskId, userId))
-        self.task_to_users[taskId] = userId
-        self.task_to_priority[taskId] = priority
+        t = (-priority, -taskId, userId)
+        self.valid[-taskId] = t
+        heappush(self.tasks, t)
+        
 
     def edit(self, taskId: int, newPriority: int) -> None:
-        user = self.task_to_users[taskId]
-        self.rmv(taskId)
-        self.add(user, taskId, newPriority)
-        
+        old_pri, old_task, old_user = self.valid[-taskId]
+        t = (-newPriority, old_task, old_user)
+        self.valid[-taskId] = t
+        heappush(self.tasks, t)
+
     def rmv(self, taskId: int) -> None:
-        user = self.task_to_users[taskId]        
-        priority = self.task_to_priority[taskId]
-        self.tasks.remove((priority, taskId, user))
-        del self.task_to_users[taskId]
-        del self.task_to_priority[taskId]
+        del self.valid[-taskId]
 
     def execTop(self) -> int:
-        if not self.tasks:
-            return -1
-        _, task_id, user_id = self.tasks[-1]
-        self.rmv(task_id)
-        return user_id
+        # print(self.tasks)
+        # print(self.valid)
+        while self.tasks:
+            pri, tsk, usr = heappop(self.tasks)
 
+            if tsk not in self.valid:
+                continue
+            
+           
+            if self.valid[tsk][0] != pri or self.valid[tsk][2] != usr:
+                continue
+            
+            del self.valid[tsk]
+            return usr
+            
+        return -1
 
 # Your TaskManager object will be instantiated and called as such:
 # obj = TaskManager(tasks)
