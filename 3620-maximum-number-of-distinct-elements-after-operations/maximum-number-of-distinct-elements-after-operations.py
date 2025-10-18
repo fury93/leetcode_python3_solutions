@@ -4,10 +4,9 @@ class Solution:
         nums.sort()
 
         for n in nums:
-            if maxUniq > n + k: continue
-            nextMaxUniq = max(maxUniq + 1, n - k)
+            nextMaxUniq = min(max(maxUniq + 1, n - k), n + k)
 
-            if n - k <= nextMaxUniq <= n + k:
+            if nextMaxUniq > maxUniq:
                 res += 1
                 maxUniq = nextMaxUniq
 
