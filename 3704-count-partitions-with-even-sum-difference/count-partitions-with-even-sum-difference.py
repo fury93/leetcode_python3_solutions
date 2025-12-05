@@ -1,5 +1,8 @@
 class Solution:
     def countPartitions(self, nums: List[int]) -> int:
+        return len(nums) - 1 if sum(nums) & 1 == 0 else 0
+
+    def countPartitions2(self, nums: List[int]) -> int:
         prefix, rightSm, leftSm = [], sum(nums), 0
 
         res = 0
