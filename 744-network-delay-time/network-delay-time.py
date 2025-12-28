@@ -1,18 +1,30 @@
 class Solution:
+    # SPFA
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        q = deque([(k, 0)])
-        signalTime = [0] + [math.inf] * n
         adjList = defaultdict(list)
         for u, v, w in times:
             adjList[u].append((v, w))
 
-        while q:
-            u, time = q.popleft()
-            
-            if signalTime[u] > time:
-                signalTime[u] = time
-                for v, w in adjList[u]:
-                    q.append((v, time + w))
+        bestTime = [0] + [math.inf] * n
+        bestTime[k] = 0
 
-        maxTime = max(signalTime)
-        return -1 if maxTime == math.inf else maxTime
+        q = deque([k])
+        inQueue = [False] * (n + 1)
+        inQueue[k] = True
+
+        while q:
+            u = q.popleft()
+            inQueue[u] = False
+
+            for v, w in adjList[u]:
+                newTime = bestTime[u] + w
+                
+                if newTime < bestTime[v]:
+                    bestTime[v] = newTime
+                    if not inQueue[v]:
+                        q.append(v)
+                        inQueue[v] = True
+               
+
+        res = max(bestTime)
+        return -1 if res == math.inf else res
