@@ -1,7 +1,7 @@
 class Solution:
     # Dijkstra
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        adjList = defaultdict(list)
+        adjList = [[] for _ in range(n + 1)]
         for u, v, w in times:
             adjList[u].append((v, w))
 
