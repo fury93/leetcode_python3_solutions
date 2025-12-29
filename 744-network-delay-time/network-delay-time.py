@@ -1,6 +1,28 @@
 class Solution:
-    # SPFA
+    # Dijkstra
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        adjList = defaultdict(list)
+        for u, v, w in times:
+            adjList[u].append((v, w))
+
+        travelTime = dict()
+        q = [(0, k)]
+
+        while q:
+            curTime, u = heappop(q)
+            if u in travelTime: continue
+
+            travelTime[u] = curTime
+            if len(travelTime) == n: break
+
+            for v, w in adjList[u]:
+                if v not in travelTime:
+                    heappush(q, (curTime + w, v))
+
+        return -1 if len(travelTime) < n else max(travelTime.values())
+
+    # SPFA
+    def networkDelayTime2(self, times: List[List[int]], n: int, k: int) -> int:
         adjList = defaultdict(list)
         for u, v, w in times:
             adjList[u].append((v, w))
