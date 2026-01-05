@@ -1,14 +1,28 @@
+import heapq
 class Solution:
     def swimInWater(self, grid):
-        N, heap, visited, res = len(grid), [(grid[0][0], 0, 0)], set([(0, 0)]), 0
-        
-        for i in range(N*N):
-            val, x, y = heappop(heap)
-            res = max(res, val)
-            if x == N-1 and y == N-1: return res
-            neib_list = [[0,1],[0,-1],[1,0],[-1,0]]
-            
-            for dx, dy in neib_list:
-                if (x + dx, y + dy) not in visited and 0<=x+dx<N and 0<=y+dy<N:
-                    heappush(heap, (grid[x+dx][y+dy], x+dx, y+dy))
-                    visited.add((x+dx, y+dy))
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        pq = [(grid[0][0], 0, 0)] # (time, row, col)
+        N = len(grid)
+        visited = set([(0, 0)])
+        maxTime = grid[0][0]
+
+        def isValid(row, col):
+            return 0 <= row < N and 0 <= col < N and (row, col) not in visited
+
+        while True:
+            curTime, r, c = heappop(pq)
+            maxTime = max(maxTime, curTime)
+
+            if r == N - 1 and c == N - 1: break
+
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                if not isValid(nr, nc): continue
+
+                nextTime = max(maxTime, grid[nr][nc])
+                heappush(pq, (nextTime, nr, nc))
+                visited.add((nr, nc))
+
+
+        return maxTime
