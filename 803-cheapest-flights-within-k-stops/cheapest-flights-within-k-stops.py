@@ -1,5 +1,5 @@
 class Solution:
-    # Dijkstra vith modiciations
+    # Dijkstra with modiciations
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         adjList = [[] for _ in range(n)]
         for u, v, price in flights:
@@ -10,19 +10,17 @@ class Solution:
 
         while q:
             price, stops, city = heappop(q)
+            # we already have a better way to this city with less stops
+            if stops >= cityStops[city] : continue
+            cityStops[city] = stops
             
             if city == dst:
                 return price
             
-            # we already have a better way to this city with less stops
-            if stops >= cityStops[city] : continue
-            
-            cityStops[city] = stops
-            stops += 1
-            if stops > k: continue # no more stops is availabe
+            if stops == k: continue # no more stops is availabe
 
             for nextCity, flyCost in adjList[city]:
-                heappush(q, (price + flyCost, stops, nextCity))
+                heappush(q, (price + flyCost, stops + 1, nextCity))
 
         return -1
 
