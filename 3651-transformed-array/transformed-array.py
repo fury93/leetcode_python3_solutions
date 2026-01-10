@@ -1,5 +1,8 @@
 class Solution:
     def constructTransformedArray(self, nums: List[int]) -> List[int]:
+        return [nums[(n + i) % len(nums)] for i, n in enumerate(nums)]
+    
+    def constructTransformedArray2(self, nums: List[int]) -> List[int]:
         ln = len(nums)
         res = [None] * ln
 
