@@ -1,5 +1,24 @@
 class Solution:
+    # DFS preprocessing
     def checkIfPrerequisite(self, N: int, prerequisites, queries):
+        isPrerequisite = [[False] * N for _ in range(N)]
+        adjList = [[] for _ in range(N)]
+        for u, v in prerequisites:
+            adjList[u].append(v)
+
+        def dfs(parent, child):
+            for nei in adjList[child]:
+                if not isPrerequisite[parent][nei]:
+                    isPrerequisite[parent][nei] = True
+                    dfs(parent, nei)
+
+        for i in range(N):
+            dfs(i, i)
+
+        return [isPrerequisite[u][v] for u, v in queries]
+
+    # Floyd-Warshall with bitmask O(N^3/64)
+    def checkIfPrerequisite1(self, N: int, prerequisites, queries):
         rows = [0] * N
         for u, v in prerequisites:
             rows[u] |= (1 << v)
