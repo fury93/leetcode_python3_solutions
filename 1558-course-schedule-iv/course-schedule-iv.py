@@ -1,5 +1,18 @@
 class Solution:
-    def checkIfPrerequisite(
+    def checkIfPrerequisite(self, N: int, prerequisites, queries):
+        rows = [0] * N
+        for u, v in prerequisites:
+            rows[u] |= (1 << v)
+
+        for k in range(N):
+            for i in range(N):
+                if (rows[i] >> k) & 1:
+                    rows[i] |= rows[k]
+
+        return [bool((rows[u] >> v) & 1) for u, v in queries]
+
+    # Floyd-Warshall O(N^3)
+    def checkIfPrerequisite2(
         self,
         N: int,
         prerequisites: List[List[int]],
@@ -12,8 +25,9 @@ class Solution:
 
         for k in range(N):
             for i in range(N):
-                for j in range(N):
-                    if not isPrerequisite[i][j]:
-                        isPrerequisite[i][j] = isPrerequisite[i][k] and isPrerequisite[k][j]
+                if isPrerequisite[i][k]:
+                    for j in range(N):
+                        if isPrerequisite[k][j]:
+                            isPrerequisite[i][j] = True
 
         return [isPrerequisite[u][v] for u, v in queries]
