@@ -1,28 +1,19 @@
 class Solution:
     def checkIfPrerequisite(
         self,
-        numCourses: int,
+        N: int,
         prerequisites: List[List[int]],
         queries: List[List[int]],
     ) -> List[bool]:
-        isPrerequisite = [[False] * numCourses for _ in range(numCourses)]
+        isPrerequisite = [[False] * N for _ in range(N)]
 
-        for edge in prerequisites:
-            isPrerequisite[edge[0]][edge[1]] = True
+        for u, v in prerequisites:
+            isPrerequisite[u][v] = True
 
-        for intermediate in range(numCourses):
-            for src in range(numCourses):
-                for target in range(numCourses):
-                    # If there is a path src -> intermediate and intermediate -> target, then src -> target exists as well
-                    isPrerequisite[src][target] = isPrerequisite[src][
-                        target
-                    ] or (
-                        isPrerequisite[src][intermediate]
-                        and isPrerequisite[intermediate][target]
-                    )
+        for k in range(N):
+            for i in range(N):
+                for j in range(N):
+                    if not isPrerequisite[i][j]:
+                        isPrerequisite[i][j] = isPrerequisite[i][k] and isPrerequisite[k][j]
 
-        answer = []
-        for query in queries:
-            answer.append(isPrerequisite[query[0]][query[1]])
-
-        return answer
+        return [isPrerequisite[u][v] for u, v in queries]
