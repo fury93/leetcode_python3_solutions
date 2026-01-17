@@ -1,9 +1,14 @@
 # Write your MySQL query statement below
-SELECT  r.book_id, b.title, b.author, b.genre, b.pages, MAX(r.session_rating) - MIN(r.session_rating) rating_spread, 
-round( (SUM( CASE WHEN r.session_rating < 3 THEN 1 ELSE 0 END + CASE WHEN r.session_rating > 3 THEN 1 ELSE 0 END)) / COUNT(r.session_id) , 2) polarization_score
-FROM reading_sessions r
-INNER JOIN books b USING(book_id)
-GROUP BY r.book_id, b.title, b.author, b.genre, b.pages
-HAVING COUNT(r.session_id) > 4 AND MAX(r.session_rating) > 3 AND MIN(r.session_rating) < 3 AND
-polarization_score >= 0.6
-ORDER BY polarization_score DESC, b.title DESC
+select 
+b.book_id as book_id,
+title,
+author,
+genre,
+pages,
+max(session_rating) - min(session_rating) as rating_spread,
+round(sum(case when session_rating <= 2 or session_rating >= 4 then 1 else 0 end)/count(1), 2) as polarization_score
+from
+books b join reading_sessions r on b.book_id = r.book_id
+group by b.book_id
+having count(*) >= 5 and min(session_rating) <= 2 and max(session_rating) >= 4
+order by polarization_score desc, title desc
