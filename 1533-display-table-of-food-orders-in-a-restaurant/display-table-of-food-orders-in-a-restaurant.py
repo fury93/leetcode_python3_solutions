@@ -7,16 +7,13 @@ class Solution:
             tables[table][food] += 1
 
         sortedFoods = sorted(foods)
-        foodToId = {f:i+1 for i, f in enumerate(sortedFoods)}
+        foodId = {f:i for i, f in enumerate(sortedFoods)}
 
         res = [["Table"] + sortedFoods]
-        template = [0] * (len(sortedFoods) + 1)
-        
         for table in sorted(tables.keys(), key = int):
-            row = template[::]
-            row[0] = table
+            row = ["0"] * (len(sortedFoods))
             for food in tables[table]:
-                row[foodToId[food]] = tables[table][food]
-            res.append(list(map(str, row)))
+                row[foodId[food]] = str(tables[table][food])
+            res.append([table] + row)
 
         return res
