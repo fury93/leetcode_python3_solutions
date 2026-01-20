@@ -4,7 +4,7 @@ class Solution:
         def getVowels(word):
             return sum(1 for ch in word if ch in vowels)
         
-        words = s.split(' ')
+        words = s.split()
         swapCnt = getVowels(words[0])
 
         for i in range(1, len(words)):
