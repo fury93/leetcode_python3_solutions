@@ -9,10 +9,11 @@ class Solution:
         cnt = Counter()
         for r, c in product(range(R), range(C)):
             for dr, dc in directions:
-                nr, nc, curn = r + dr, c + dc, mat[r][c]
+                nr, nc, curn = r, c, 0
                 while 0 <= nr < R and 0 <= nc < C:
                     curn = curn * 10 + mat[nr][nc]
-                    cnt[curn] += 1
+                    if curn > 10:
+                        cnt[curn] += 1
                     nr, nc = nr + dr, nc + dc
 
         nums = sorted(cnt, key=lambda x: (cnt[x], x), reverse = True)
