@@ -1,5 +1,22 @@
 class Solution:
     def findKthBit(self, n: int, k: int) -> str:
+        invert_count = 0
+        length = (1 << n) - 1 
+
+        while k > 1:
+            if k == length // 2 + 1:
+                return "1" if invert_count % 2 == 0 else "0"
+
+            if k > length // 2:
+                k = length + 1 - k
+                invert_count += 1
+
+            length //= 2
+
+        return "0" if invert_count % 2 == 0 else "1"
+
+class Solution2:
+    def findKthBit(self, n: int, k: int) -> str:
         # Find the position of the rightmost set bit in k
         # This helps determine which "section" of the string we're in
         position_in_section = k & -k
