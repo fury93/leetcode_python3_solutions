@@ -1,20 +1,20 @@
 class Solution:
     def maxDistance(self, grid: List[List[int]]) -> int:
-        R = C = len(grid)
-        q = deque((r, c, 0) for r, c in product(range(R), range(C)) if grid[r][c] == 1)
-        if len(q) == R * C or len(q) == 0:
+        N = len(grid)
+        q = deque((r, c) for r, c in product(range(N), range(N)) if grid[r][c] == 1)
+        if len(q) == N * N or len(q) == 0:
             return -1
         
         res = 0
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        
+
         while q:
-            r, c, d = q.popleft()
+            r, c = q.popleft()
             for dr, dc in directions:
-                nr, nc, nd = r + dr, c + dc, d + 1
-                if 0 <= nr < R and 0 <= nc < C and grid[nr][nc] == 0:
-                    grid[nr][nc] = nd
-                    q.append((nr, nc, nd))
-                    res = max(res, grid[nr][nc])
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < N and 0 <= nc < N and grid[nr][nc] == 0:
+                    q.append((nr, nc))
+                    grid[nr][nc] = grid[r][c] + 1
+                    res = grid[nr][nc]
         
-        return res
+        return res - 1
