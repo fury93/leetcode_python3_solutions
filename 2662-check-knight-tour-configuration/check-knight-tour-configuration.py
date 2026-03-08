@@ -5,12 +5,10 @@ class Solution:
         moves = [None] * (R * C)
 
         for r, c in product(range(R), range(C)):
-            move = grid[r][c]
-            moves[move] = (r, c)
+            moves[grid[r][c]] = (r, c)
 
         for prev, cur in pairwise(moves):
-            if prev[0] == cur[0] or prev[1] == cur[1]: return False
-            manhattanDist = abs(prev[0] - cur[0]) + abs(prev[1] - cur[1])
-            if manhattanDist != 3: return False
+            if abs(prev[0] - cur[0]) *  abs(prev[1] - cur[1]) != 2:
+                return False
 
         return True
