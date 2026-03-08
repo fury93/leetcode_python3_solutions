@@ -1,17 +1,18 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        res, ROWS, COLS, LAND, WATER = 0, len(grid), len(grid[0]), '1', '0'
+        res, R, C, land, water = 0, len(grid), len(grid[0]), '1', '0'
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-        def dfs(row, col):
-            if 0 <= row < ROWS and 0 <= col < COLS and grid[row][col] == LAND:
-                grid[row][col] = WATER
-                for diffRow, diffCol in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-                    dfs(row + diffRow, col + diffCol)
+        def dfs(r, c):
+            if 0 <= r < R and 0 <= c < C and grid[r][c] == land:
+                grid[r][c] = water
+                for dr, dc in directions:
+                    dfs(r + dr, c + dc)
 
-        for row, col in product(range(ROWS), range(COLS)):
-            if grid[row][col] == LAND:
+        for r, c in product(range(R), range(C)):
+            if grid[r][c] == land:
                 res += 1
-                dfs(row, col)
+                dfs(r, c)
 
         return res
 
