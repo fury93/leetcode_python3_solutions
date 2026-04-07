@@ -1,21 +1,19 @@
 class Solution:
     def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
-        obstacles = set(tuple(_) for _ in obstacles)
-        res, curX, curY, diffX, diffY  = 0, 0, 0, 0, 1
+        obstacles = set(map(tuple, obstacles))
+        res, x, y, dx, dy  = 0, 0, 0, 0, 1
 
         for command in commands:
-            if command < 0: #change direction 
-                match command:
-                    case -1: diffX, diffY = diffY, -diffX # clockwise
-                    case -2: diffX, diffY = -diffY, diffX # anti-clockwise
-                continue
-            
-            for _ in range(command):
-                nextX, nextY = curX + diffX, curY + diffY
-                if (nextX, nextY) in obstacles: break
-                curX, curY = nextX, nextY
-            
-            res = max(res, curX*curX + curY*curY)
+            match command:
+                case -1: dx, dy = dy, -dx # clockwise
+                case -2: dx, dy = -dy, dx # anti-clockwise
+                case steps:
+                    for _ in range(steps):
+                        nx, ny = x + dx, y + dy
+                        if (nx, ny) in obstacles: break
+                        x, y = nx, ny
+                    
+                    res = max(res, x**2 + y**2)
 
         return res
 
