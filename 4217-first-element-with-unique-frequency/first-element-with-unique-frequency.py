@@ -1,7 +1,7 @@
 class Solution:
     def firstUniqueFreq(self, nums: List[int]) -> int:
-        cnt = Counter(nums)
-        uniqFreq = [k for k, v in Counter(cnt.values()).items() if v == 1]
+        cntNums = Counter(nums)
+        cntFreq = Counter(cntNums.values())
         for n in nums:
-            if cnt[n] in uniqFreq: return n
+            if cntFreq[cntNums[n]] == 1: return n
         return -1
