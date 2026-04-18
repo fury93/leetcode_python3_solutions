@@ -4,7 +4,8 @@ class Solution:
         for i in range(2, len(nums)):
             if nums[i] == nums[i-1] + nums[i-2]:
                 ln += 1
+                res = max(res, ln)
             else:
                 ln = 0
-            res = max(res, ln)
+            
         return res + 2
